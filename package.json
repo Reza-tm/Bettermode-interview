@@ -4,11 +4,9 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "node server",
-    "build": "npm run build:client && npm run build:server",
-    "build:client": "vite build --ssrManifest --outDir dist/client",
-    "build:server": "vite build --ssr src/entry-server.tsx --outDir dist/server",
-    "preview": "cross-env NODE_ENV=production node server",
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview",
     "lint": "eslint .",
     "test": "vitest",
     "coverage": "vitest run --coverage",
@@ -17,13 +15,16 @@
   },
   "dependencies": {
     "@apollo/client": "^3.11.8",
+    "clsx": "^2.1.1",
     "compression": "^1.7.4",
     "express": "^4.19.2",
     "graphql": "^16.9.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.26.1",
-    "sirv": "^2.0.4"
+    "sirv": "^2.0.4",
+    "tailwind-merge": "^2.5.2",
+    "vite-tsconfig-paths": "^5.0.1"
   },
   "devDependencies": {
     "@chromatic-com/storybook": "^1.9.0",
@@ -46,6 +47,8 @@
     "eslint-plugin-storybook": "^0.8.0",
     "globals": "^15.9.0",
     "postcss": "^8.4.45",
+    "prettier": "^3.3.3",
+    "prettier-plugin-tailwindcss": "^0.6.6",
     "storybook": "^8.2.9",
     "tailwindcss": "^3.4.10",
     "typescript": "^5.5.3",

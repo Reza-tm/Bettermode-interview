@@ -19,6 +19,13 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
+
+    /* Alias */
+    "paths": {
+      "@/*": ["./src/*"],
+      "@ui": ["./src/components/ui"],
+      "@icons": ["./src/assets/icons"]
+    },
     "allowSyntheticDefaultImports": true
   },
   "include": ["src"]
