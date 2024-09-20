@@ -1,0 +1,27 @@
+# Project Structure
+
+```
+├── public/
+├── server-core/                 # Files related to server.
+├── src/
+│   ├── api/                     # Api routes with express
+│   ├── assets/                  # Images,svgs and icons
+│   ├── components/
+│   ├── constants/
+│   ├── graphql/                 # GraphQL-related config files and queries and mutations
+│   ├── hooks/
+│   ├── pages/                   # Representing views
+│   ├── styles/                  # Dark mode , light mode and font styles
+│   ├── types/                   # TypeScript types for shared types
+│   ├── utils/
+│   ├── validations/
+│   ├── assets.d.ts              # Type definitions for assets (webp , svg , ...)
+│   ├── graphql-env.d.ts         # Generated file with gql.tada
+│   ├── index.css
+│   └── window.d.ts              # TypeScript definitions for window object
+├── .env.example                 # Example environment file for developers
+├── index.html                   # HTML template for the app
+├── schema.graphql               # GraphQL schema
+└── server.js
+└── setup-test                   # Setup essentials for testing env
+```

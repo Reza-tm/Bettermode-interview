@@ -1,0 +1,19 @@
+# Auth
+
+### SSR :
+1. The login API is located at `apis/auth`. When a user fills out the login form, this API is called to authenticate the user.
+2. The API sets a `c_access_token` cookie. This token will be used for all future requests to ensure the user is authenticated.
+3. We also set this token in our server-side Apollo Client.
+4. This token is crucial for the `authGuard` middleware, allowing it to verify the user's authentication status.
+
+### Auth guard:
+The `authGuard` is a middleware that ensures users are authenticated before accessing private routes.
+1. If user is already authenticated and tries to access an auth route, we will redirect them to the homepage
+2. If the user is not authenticated,we will redirect to the login page.
+
+### CSR:
+1. After authentication, we store the user data (including the auth token) in the `window` object. This allows us to access it in our Apollo Client.
+2. Once the user data is passed to Apollo Client, we remove the user data from the `window`.
+
+
+

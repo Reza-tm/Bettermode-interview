@@ -1,0 +1,6604 @@
+# Indicates exactly one field must be supplied and this field must not be `null`.
+directive @oneOf on INPUT_OBJECT
+
+type AccessGroup {
+  createdAt: DateTime!
+  description: String
+  entityId: ID!
+  entityType: AccessGroupEntityType!
+  id: ID!
+  info: String
+  name: String!
+  networkId: ID!
+  type: String!
+}
+
+enum AccessGroupEntityType {
+  network
+  post
+  space
+}
+
+type Action {
+  status: ActionStatus!
+}
+
+type ActionPermissions {
+  inputPermissions: [InputPathPermissions!]!
+  isAuthorized: IsAuthorized!
+  name: String!
+  outputPermissions: [PathPermissions!]!
+}
+
+enum ActionStatus {
+  failed
+  succeeded
+}
+
+type ActiveSso {
+  logoutUrl: String
+  settingsUrl: String
+}
+
+input AddAppCollaboratorInput {
+  email: String!
+}
+
+input AddMediasInput {
+  contentTypes: [String!]!
+}
+
+input AddNetworkInput {
+  description: String
+  domain: String
+  entrancePage: String
+  faviconId: String
+  gclid: String
+  industry: NetworkIndustryType
+  name: String!
+  owner: JoinNetworkInput!
+  primaryMembers: NetworkPrimaryMembersType
+  promoCode: String
+  referrer: String
+  timeframe: NetworkTimeframeType
+  utmCampaign: String
+  utmContent: String
+  utmMedium: String
+  utmSource: String
+  utmTerm: String
+  visibility: NetworkVisibility! = private
+}
+
+input AddReactionInput {
+  overrideSingleChoiceReactions: Boolean
+  participantId: ID
+  reaction: String!
+}
+
+input AddSpaceMemberInput {
+  memberId: ID!
+  roleId: ID
+}
+
+input AddTrialInput {
+  endDate: DateTime!
+}
+
+type AddonInformation {
+  priceId: String!
+  productId: String!
+  quantity: Float!
+}
+
+type AnalyticsLimits {
+  planLimits: [AnalyticsPlanLimits!]!
+}
+
+type AnalyticsPlanLimits {
+  daysLimitation: Float
+  plan: PlanName!
+}
+
+type AnalyticsQueryTimeframe {
+  from: Float!
+  to: Float!
+}
+
+type AnalyticsResponse {
+  maxCacheTime: Float!
+  query: String!
+  records: [ReportRecord!]!
+  timeframe: AnalyticsQueryTimeframe!
+}
+
+type ApiRateLimitStat {
+  consumableType: ApiRequestLimitType!
+  consumedPoints: Float!
+  duration: Float!
+  limit: Float!
+  remainingPoints: Float!
+  resetsAt: DateTime!
+}
+
+type ApiRequestLimit {
+  consumableType: ApiRequestLimitType!
+  duration: Float!
+  limit: Float!
+}
+
+enum ApiRequestLimitType {
+  Complexity
+  Request
+}
+
+type App {
+  about: String
+  authMemberInstallation: AppInstallation
+  authorName: String
+  authorUrl: String
+  banner: Media
+  bannerId: ID
+  clientId: String
+  clientSecret: String
+  comingSoon: Boolean!
+  createdAt: DateTime!
+  createdBy: Member
+  createdById: ID
+  customCodes: AppCustomCodes
+  description: String
+  docsUrl: String
+  dynamicBlocks: [DynamicBlock!]
+  embedIds: [ID!]!
+  embeds: [Embed!]
+  enabledContexts: [PermissionContext!]
+    @deprecated(reason: "Apps will be only installed on the network level")
+  favicon: Media
+  faviconId: ID
+  federatedSearchEnabled: Boolean!
+  globalBanner: Media
+  globalEmbeds: [Embed!]
+  globalFavicon: Media
+  globalImage: Media
+  globalImages: [Media!]
+  globalNetwork: PluralNetwork
+    @deprecated(reason: "Use the global gateway instead")
+  id: ID!
+  image: Media
+  imageId: ID
+  imageIds: [ID!]!
+  images: [Media!]
+  installed: Boolean
+  locked: Boolean!
+  name: String!
+  network: Network
+  networkId: ID!
+  privacyPolicyUrl: String
+  privatelyPublished: Boolean
+  requiredPermissions: [PrimaryScopes!]!
+  requiredPlan: PlanName
+  secretToken: String
+  settingsBlock: DynamicBlock
+  slug: String!
+  standing: StoreItemStanding!
+  status: StoreItemStatus!
+  termsOfServiceUrl: String
+  updatedAt: DateTime!
+  updatedBy: Member
+  updatedById: ID
+  webhookSignSecret: String
+  webhookSubscriptions: [String!]
+  webhookUrl: String
+}
+
+type AppAction {
+  data: String
+  status: ActionStatus!
+}
+
+type AppCollaborator {
+  addedById: ID
+  app: App @deprecated(reason: "Use the global gateway instead")
+  appId: ID!
+  createdAt: DateTime!
+  email: String!
+  id: ID!
+  type: AppCollaboratorType!
+}
+
+enum AppCollaboratorType {
+  COLLABORATOR
+  OWNER
+}
+
+type AppCustomCodes {
+  body: String
+  head: String
+}
+
+type AppEdge {
+  cursor: String!
+  node: App!
+}
+
+type AppInstallation {
+  app: App
+  appVersion: String
+  context: PermissionContext
+    @deprecated(reason: "Apps will be only installed on the network level")
+  createdAt: DateTime!
+  id: ID!
+  installedAt: DateTime!
+  installedBy: Member
+  network: Network
+  permissions: [String!]!
+  status: AppInstallationStatus!
+  templatesMappings: AppInstallationTemplatesMappings
+  updatedAt: DateTime!
+}
+
+type AppInstallationEdge {
+  cursor: String!
+  node: AppInstallation!
+}
+
+enum AppInstallationStatus {
+  DELETED
+  DISABLED
+  ENABLED
+}
+
+type AppInstallationTemplatesMappings {
+  member: [TemplatesMapping!]
+  postTypes: [TemplatesMapping!]
+}
+
+input AppInstallationTemplatesMappingsInput {
+  memberTypes: [TemplatesMappingInput!]
+  postTypes: [TemplatesMappingInput!]
+}
+
+type AppInteraction {
+  appId: String!
+  interactionId: String!
+  props: String
+  slate: Slate
+  type: AppInteractionType!
+}
+
+enum AppInteractionType {
+  Close
+  Data
+  OpenModal
+  OpenToast
+  Redirect
+  Reload
+  Show
+}
+
+type AppPublication {
+  addedById: String
+  createdAt: DateTime!
+  id: String!
+  itemId: String!
+  networkId: String!
+}
+
+type AppSetting {
+  appId: String!
+  context: PermissionContext!
+  entityId: String
+  id: ID!
+  networkId: String!
+  settings: String!
+}
+
+type AppToken {
+  accessToken: String!
+  gatewayUrl: String
+}
+
+input AssignOrRevokeBadgeInput {
+  memberId: String!
+}
+
+type AuthInfoWithOtp {
+  member: Member!
+  network: Network!
+  otp: String!
+  role: Role
+}
+
+type AuthToken {
+  accessToken: String!
+  member: Member!
+  network: Network
+  networkPublicInfo: NetworkPublicInfo!
+  refreshToken: String!
+  role: Role!
+}
+
+type AuthTokenWithOtp {
+  accessToken: String!
+  member: Member!
+  network: Network
+  networkPublicInfo: NetworkPublicInfo!
+  otp: String!
+  refreshToken: String!
+  role: Role!
+}
+
+type Badge {
+  active: Boolean!
+  backgroundColor: String
+  daysUntilExpired: Float
+  id: ID!
+  image: Media
+  imageId: ID
+  longDescription: String
+  name: String!
+  networkId: ID!
+  settings: [BadgeSettings!]
+  shortDescription: String!
+  text: String
+  textColor: String
+  type: BadgeType!
+}
+
+type BadgeSettings {
+  key: String!
+  value: String!
+}
+
+input BadgeSettingsInput {
+  key: String!
+  value: String!
+}
+
+enum BadgeType {
+  Manual
+  NewMember
+  Role
+  SuspendedMember
+}
+
+type BaseCustomFieldSchema {
+  archived: Boolean
+  description: String
+  externalKeys: [String!]
+  items: BaseCustomFieldSchema
+  key: String!
+  name: String!
+  properties: [BaseCustomFieldSchema!]
+  required: Boolean
+  type: CustomFieldType!
+  typeOptions: CustomFieldTypeOptions
+  validators: [CustomFieldValidator!]
+}
+
+input BaseCustomFieldSchemaInput {
+  archived: Boolean
+  description: String
+  externalKeys: [String!]
+  items: BaseCustomFieldSchemaInput
+  key: String!
+  name: String!
+  properties: [BaseCustomFieldSchemaInput!]
+  required: Boolean
+  type: CustomFieldType!
+  typeOptions: CustomFieldTypeOptionsInput
+  validators: [CustomFieldValidatorInput!]
+}
+
+type Basket {
+  items: [BasketItem!]
+  promoErrorMessage: String
+  renewalType: PlanRenewalType!
+  total: Price
+}
+
+type BasketItem {
+  note: String
+  promoCodeItem: Boolean
+  title: String!
+  value: Price!
+}
+
+input BasketsInput {
+  name: PlanName!
+  promotionCode: String
+  seats: Int!
+}
+
+type BillingAddress {
+  city: String
+  country: String!
+  postalCode: String
+  state: String
+  streetAddress: String
+}
+
+input BillingAddressInput {
+  city: String
+  country: String!
+  postalCode: String
+  state: String
+  streetAddress: String
+}
+
+type BillingDetails {
+  address: BillingAddress
+  billingEmail: String
+  card: CardPublicInformation
+  companyName: String
+  vat: Vat
+}
+
+input BillingDetailsInput {
+  address: BillingAddressInput
+  billingEmail: String
+  card: CardInput
+  companyName: String
+  vat: VatInput
+}
+
+type BillingPortalSession {
+  url: String!
+}
+
+type BillingPrice {
+  amount: Float!
+  default: Boolean!
+  id: String!
+  interval: BillingPriceInterval!
+}
+
+enum BillingPriceInterval {
+  Month
+  Year
+}
+
+type BillingProduct {
+  app: App
+  appId: String
+  categories: [String!]!
+  description: String
+  downgradable: Boolean!
+  features: [String!]!
+  hubContent: HubContent
+  hubContentId: String
+  id: String!
+  imageUrls: [String!]!
+  isEnterprise: Boolean!
+  name: String!
+  order: Float
+  popular: Boolean!
+  prices: [BillingPrice!]!
+  public: Boolean!
+  purchasable: Boolean!
+  purchaseLimit: Float
+  requiredPlanOrder: Float
+}
+
+type BillingProducts {
+  addons: [BillingProduct!]!
+  plans: [BillingProduct!]!
+}
+
+type BillingSubscription {
+  createdAt: DateTime!
+  id: String!
+  status: SubscriptionStatus!
+  updatedAt: DateTime!
+}
+
+type Block {
+  children: String
+  extraProps: String
+  id: String!
+  name: String!
+  output: String
+  props: String
+}
+
+input BlockInput {
+  children: String
+  extraProps: String
+  id: String!
+  name: String!
+  output: String
+  props: String
+}
+
+union By = Member
+
+enum CallbackAction {
+  Insert
+  Modal
+  None
+  Replace
+}
+
+type CallbackResponse {
+  action: CallbackAction!
+  slate: Slate
+  toast: Toast
+}
+
+type CaptchaSettings {
+  enabled: Boolean!
+  secretKey: String
+  siteKey: String
+}
+
+input CaptchaSettingsInput {
+  enabled: Boolean!
+  secretKey: String
+  siteKey: String
+}
+
+input CardInput {
+  cardNumber: String!
+  cvc: String!
+  expirationMonth: Float!
+  expirationYear: Float!
+  nameOnCard: String
+}
+
+type CardPublicInformation {
+  expirationMonth: Float!
+  expirationYear: Float!
+  lastFourDigits: String!
+  updatedAt: DateTime!
+}
+
+type ChartData {
+  label: String!
+  points: String!
+  value: String
+}
+
+type ClientApiUsage {
+  clientId: String!
+  clientName: String
+  value: Float!
+}
+
+type Collection {
+  createdAt: DateTime!
+  createdBy: Member
+  customOrderingIndex: Float!
+  description: String
+  externalId: ID
+  id: ID!
+  name: String!
+  network: Network
+  relativeUrl: String
+  slug: String!
+  spaces(exploreOnly: Boolean, limit: Int!, memberId: ID): PaginatedSpace
+  updatedAt: DateTime!
+  url: String
+}
+
+type CollectionEdge {
+  cursor: String!
+  node: Collection!
+}
+
+enum CollectionListOrderByEnum {
+  CREATED_AT
+  CUSTOM_ORDERING_INDEX
+  UPDATED_AT
+}
+
+input ColumnSortInput {
+  key: String!
+  order: SortOrder
+}
+
+input ConfirmResetPasswordInput {
+  token: String!
+}
+
+type ContentTranslationSettings {
+  enabled: Boolean!
+}
+
+input ContentTranslationSettingsInput {
+  enabled: Boolean!
+}
+
+type ContentTypeTemplate {
+  allowedReactions: [String!]
+  context: PostTypeContext!
+  forbiddenReactions: [String!]
+  languageTemplate: String
+  name: String!
+  pluralName: String!
+  postFields: CustomFieldsSchema
+  primaryReactionType: ReactionType
+    @deprecated(reason: "Use allowedReactions instead.")
+  selfRepliable: Boolean
+  shortContentTemplate: String
+  singleChoiceReactions: [String!]
+  slate: Slate
+  slug: String!
+  titleTemplate: String
+  validReplyTypesIds: [String!]
+}
+
+type ContextPermissions {
+  context: PermissionContext!
+  entityActions: [EntityPermissions!]!
+}
+
+type ContextScopes {
+  context: PermissionContext!
+  entityScopes: [EntityScopes!]!
+}
+
+input ConvertPostInput {
+  byPassFieldPermissions: Boolean
+  fallbackField: String
+  targetPostTypeId: ID!
+}
+
+input CreateAccessGroupInput {
+  description: String
+  entityId: ID!
+  entityType: AccessGroupEntityType!
+  info: String
+  name: String!
+  type: String!
+}
+
+input CreateAppInput {
+  about: String
+  authorName: String
+  authorUrl: String
+  bannerId: String
+  comingSoon: Boolean
+  description: String
+  faviconId: String
+  imageId: String
+  name: String!
+  networkId: String!
+  privacyPolicyUrl: String
+  requiredPlan: PlanName
+  slug: String
+  termsOfServiceUrl: String
+}
+
+input CreateBadgeInput {
+  active: Boolean!
+  backgroundColor: String
+  daysUntilExpired: Float
+  imageId: String
+  longDescription: String
+  name: String!
+  settings: [BadgeSettingsInput!]
+  shortDescription: String!
+  text: String
+  textColor: String
+}
+
+input CreateCollectionInput {
+  createdAt: DateTime
+  description: String
+  externalId: String
+  name: String!
+  updatedAt: DateTime
+}
+
+input CreateEmojiInput {
+  text: String!
+}
+
+input CreateFileInput {
+  contentType: String!
+  extension: String!
+  name: String
+  size: Int
+}
+
+input CreateHighlightedTag {
+  # ID of an existing tag. This field will become required in an upcoming release.
+  tagId: String!
+}
+
+input CreateImageInput {
+  contentType: String!
+  cropHeight: Int
+  cropWidth: Int
+  cropX: Int
+  cropY: Int
+  cropZoom: Float
+  height: Int
+  name: String
+  width: Int
+}
+
+input CreateLimitedSupportTokenInput {
+  networkId: String!
+}
+
+input CreatePermissionInput {
+  description: String
+  name: String!
+  scopes: [String!]!
+}
+
+# Input for creating a post
+input CreatePostInput {
+  # The id of all the attachments to this post.
+  attachmentIds: [String!]
+  createdAt: DateTime
+
+  # The custom seo detail of this post
+  customSeoDetail: CustomSeoDetailInput
+  externalId: String
+  externalUrl: String
+  key: String
+
+  # Whether the post is locked
+  locked: Boolean
+
+  # The fields of the post. Depending of the post type it may include title, text, image, etc.
+  mappingFields: [PostMappingFieldInput!]!
+  ownerId: ID
+
+  # The id of this post's type
+  postTypeId: String!
+
+  # Whether the post is published
+  publish: Boolean! = false
+  publishedAt: DateTime
+
+  # The slug of the post creating the human readable part of its URL
+  slug: String
+
+  # The TagIds for this post. Can be used in conjunction with tagNames.
+  tagIds: [String!]
+
+  # The tags of this post. Can be used in conjunction with tagIds.
+  tagNames: [String!]
+  updatedAt: DateTime
+}
+
+input CreatePostTypeInput {
+  allowedReactions: [String!]
+  context: PostTypeContext!
+  customReactions: [CustomReactionInput!]
+  description: String
+  excludedNativeShortcuts: [String!]
+  forbiddenReactions: [String!]
+  iconId: ID
+  languageTemplate: String
+  layout: String
+  name: String!
+  nativeFieldsTemplates: NativeFieldsTemplatesInput
+  pluralName: String!
+  postFields: CustomFieldsSchemaInput
+  primaryReactionType: ReactionType
+  recommendationsSettings: PostTypeRecommendationSettingsInput
+  selfRepliable: Boolean
+  shortContentTemplate: String
+  singleChoiceReactions: [String!]
+  slate: SlateInput
+  titleTemplate: String
+  validReplyTypesIds: [String!]
+}
+
+input CreateReportInput {
+  description: String
+  entityId: String!
+  entityType: ModerationEntityType!
+  reportCategory: ReportCategory!
+  spaceId: String
+}
+
+# Input for creating a space.
+input CreateSpaceInput {
+  address: SpaceAddressInput
+  adminIds: [String!]
+
+  # The id of the space banner.
+  bannerId: String
+
+  # The id of the collection in which the space is created.
+  collectionId: ID
+  createdAt: DateTime
+  customSeoDetail: CustomSeoDetailInput
+
+  # The description of the space.
+  description: String
+  externalId: String
+  externalUrl: String
+
+  # Is this space hidden?
+  hidden: Boolean
+
+  # The id of the space image.
+  imageId: String
+
+  # Is this space invite only?
+  inviteOnly: Boolean
+  layout: String
+  memberIds: [String!]
+
+  # The name of the space.
+  name: String!
+  nonAdminsCanInvite: Boolean
+
+  # Is this space a private space?
+  private: Boolean
+  seoDetail: SpaceSeoDetailInput
+  slate: SlateInput
+
+  # The slug of the space. It will be auto-generated if not provided.
+  slug: String
+  type: SpaceType
+  updatedAt: DateTime
+  whoCanPost: [SpaceRoleType!]
+  whoCanReact: [SpaceRoleType!]
+  whoCanReply: [SpaceRoleType!]
+  withRoles: Boolean
+}
+
+# Input for creating a tag.
+input CreateTagInput {
+  # The description of the tag.
+  description: String
+
+  # The slug of the tag. Slug is auto-generated from title if left empty.
+  slug: String
+
+  # The name of the tag.
+  title: String!
+}
+
+input CreateTemplateInput {
+  about: String
+  appIds: [String!]
+  authorName: String
+  authorUrl: String
+  bannerId: String
+  categories: [String!]
+  comingSoon: Boolean
+  description: String
+  entityId: String!
+  entityType: TemplateEntityType!
+  faviconId: String
+  hubContentId: String
+  imageId: String
+  name: String!
+  previewHtml: String
+  privacyPolicyUrl: String
+  requiredPlan: PlanName
+  slug: String
+  termsOfServiceUrl: String
+  upsertKey: String
+}
+
+enum CreatorType {
+  App
+  Member
+  System
+}
+
+type CustomCode {
+  anonymize: Boolean!
+  code: String!
+  position: CustomCodePosition!
+}
+
+enum CustomCodePosition {
+  BODY
+  HEAD
+}
+
+type CustomField {
+  key: String!
+  relationEntities: CustomFieldRelation
+  value: String
+}
+
+input CustomFieldInput {
+  key: String!
+  value: String!
+}
+
+type CustomFieldPrivacy {
+  allow: [CustomFieldPrivacyOptions!]!
+}
+
+input CustomFieldPrivacyInput {
+  allow: [CustomFieldPrivacyOptions!]!
+}
+
+enum CustomFieldPrivacyOptions {
+  ADMIN
+  OWN
+}
+
+type CustomFieldRelation {
+  medias: [Media!]!
+  members: [Member!]!
+  posts: [Post!]!
+  spaces: [Space!]!
+  tags: [Tag!]!
+}
+
+type CustomFieldSchema {
+  archived: Boolean
+  default: String
+  description: String
+  externalKeys: [String!]
+  items: BaseCustomFieldSchema
+  key: String!
+  name: String!
+  properties: [BaseCustomFieldSchema!]
+  readPrivacy: CustomFieldPrivacy
+  required: Boolean
+  searchable: Boolean
+  settings: [CustomFieldSettings!]
+  type: CustomFieldType!
+  typeOptions: CustomFieldTypeOptions
+  validators: [CustomFieldValidator!]
+  writePrivacy: CustomFieldPrivacy
+}
+
+input CustomFieldSchemaInput {
+  archived: Boolean
+  default: String
+  description: String
+  externalKeys: [String!]
+  items: BaseCustomFieldSchemaInput
+  key: String!
+  name: String!
+  properties: [BaseCustomFieldSchemaInput!]
+  readPrivacy: CustomFieldPrivacyInput
+  required: Boolean
+  searchable: Boolean
+  settings: [CustomFieldSettingsInput!]
+  type: CustomFieldType!
+  typeOptions: CustomFieldTypeOptionsInput
+  validators: [CustomFieldValidatorInput!]
+  writePrivacy: CustomFieldPrivacyInput
+}
+
+type CustomFieldSettings {
+  key: String!
+  value: String!
+}
+
+input CustomFieldSettingsInput {
+  key: String!
+  value: String!
+}
+
+enum CustomFieldType {
+  array
+  boolean
+  date
+  number
+  object
+  relation
+  richText
+  text
+}
+
+type CustomFieldTypeOptions {
+  dateType: DateTypeOptions
+  numberType: NumberTypeOptions
+  relationType: RelationTypeOptions
+  richTextType: RichTextTypeOptions
+  textType: TextTypeOptions
+}
+
+input CustomFieldTypeOptionsInput {
+  dateType: DateTypeOptions
+  numberType: NumberTypeOptions
+  relationType: RelationTypeOptions
+  richTextType: RichTextTypeOptions
+  textType: TextTypeOptions
+}
+
+type CustomFieldValidator {
+  customErrorMessage: String
+  validation: CustomFieldValidators!
+  value: String!
+}
+
+input CustomFieldValidatorInput {
+  customErrorMessage: String
+  validation: CustomFieldValidators!
+  value: String!
+}
+
+enum CustomFieldValidators {
+  allOf
+  anyOf
+  enum
+  exclusiveMaximum
+  exclusiveMinimum
+  format
+  maxItems
+  maxLength
+  maxProperties
+  maximum
+  minItems
+  minLength
+  minProperties
+  minimum
+  multipleOf
+  not
+  oneOf
+  pattern
+  uniqueItems
+}
+
+type CustomFieldsSchema {
+  fields: [CustomFieldSchema!]!
+}
+
+input CustomFieldsSchemaInput {
+  fields: [CustomFieldSchemaInput!]!
+}
+
+enum CustomHostnameStatus {
+  Missing
+  Ok
+  Pending
+  Wrong
+}
+
+type CustomReaction {
+  activeColor: String
+  activeGlyphId: String
+  activeName: String
+  color: String
+  glyphId: String!
+  key: String!
+  name: String!
+}
+
+input CustomReactionInput {
+  activeColor: String
+  activeGlyphId: String
+  activeName: String
+  color: String
+  glyphId: String!
+  key: String!
+  name: String!
+}
+
+type CustomSeoDetail {
+  canonicalUrl: String
+  description: String
+  noIndex: Boolean
+  thumbnail: Media
+  thumbnailId: ID
+  title: String
+}
+
+input CustomSeoDetailInput {
+  canonicalUrl: String
+  description: String
+  noIndex: Boolean
+  thumbnailId: ID
+  title: String
+}
+
+enum CustomSsoType {
+  Saml
+  oauth2
+}
+
+type DailyApiUsage {
+  date: DateTime!
+  total: Float!
+  usageType: ApiRequestLimitType!
+  values: [ClientApiUsage!]!
+}
+
+# A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+scalar DateTime
+
+enum DateTypeOptions {
+  date
+  datetime
+}
+
+enum DefaultSsoType {
+  Apple
+  Discord
+  Slack
+  facebook
+  google
+  linkedin
+}
+
+input DeprecatedBaseFilterInput {
+  and: [DeprecatedBaseFilterInput!]
+  filtername: Filtername!
+  key: String
+  negator: String
+  operator: String
+  or: [DeprecatedBaseFilterInput!]
+  value: String
+}
+
+input DeprecatedFiltersInput {
+  filter: DeprecatedBaseFilterInput!
+}
+
+enum DnsRecordStatus {
+  Healthy
+  Missing
+  Pending
+  Wrong
+}
+
+enum DnsRecordType {
+  CNAME
+  TXT
+}
+
+type DomainAvailability {
+  available: Boolean!
+}
+
+input DomainAvailabilityInput {
+  domain: String!
+}
+
+type DomainDnsRecord {
+  desiredValue: String!
+  message: String
+  name: String!
+  status: DnsRecordStatus!
+  type: DnsRecordType!
+}
+
+type DomainParseResult {
+  isApex: Boolean!
+  parts: DomainParts!
+}
+
+type DomainParts {
+  # The apex part of the address. It includes the domain and TLD. The `my-domain.com` in `sub.my-domain.com`.
+  apex: String!
+
+  # The full domain name (a.k.a FQDN). It includes the subdomain, domain, and TLD. Is equivalent to `apex` if `subdomain` is missing.
+  domain: String!
+
+  # The Second-level domain of the address that appears before TLD. The `my-domain` in `sub.my-domain.com`.
+  sld: String!
+
+  # The subdomain part of the address. The `sub` in `sub.my-domain.com`.
+  subdomain: String
+
+  # The Top-level domain of the address, per ICANN specifications. (e.g. com, org, co.uk)
+  tld: String!
+}
+
+type DomainProbeResult {
+  customHostnameStatus: CustomHostnameStatus!
+  dnsRecords: [DomainDnsRecord!]!
+  parseResult: DomainParseResult
+  status: DomainProbeStatus!
+}
+
+enum DomainProbeStatus {
+  Active
+  Available
+  Invalid
+  Pending
+  ReadyForTransfer
+  Reserved
+  RestrictedFeature
+  Taken
+}
+
+type DomainTransferStatus {
+  aaaarecordSuccess: Boolean!
+  aaaarecords: [String!]!
+  arecordSuccess: Boolean!
+  arecords: [String!]!
+  cnameSuccess: Boolean!
+  cnames: [String!]!
+  domain: String!
+  ns: [String!]!
+  root: Boolean!
+  success: Boolean!
+  tribeARecords: [String!]!
+  tribeCname: String!
+}
+
+type DynamicBlock {
+  app: App
+  appId: String!
+  contexts: [PermissionContext!]
+  description: String
+  favicon: Media
+  faviconId: ID
+  id: ID!
+  image: Media
+  imageId: ID
+  key: String!
+  maxSize: DynamicBlockSize!
+  name: String!
+  slate(context: PermissionContext!, entityId: ID): Slate
+  staffOnly: Boolean!
+}
+
+type DynamicBlockEdge {
+  cursor: String!
+  node: DynamicBlock!
+}
+
+enum DynamicBlockSize {
+  full
+  lg
+  md
+  sm
+  xl
+}
+
+type EmailAvailability {
+  available: Boolean!
+}
+
+type EmailLog {
+  createdAt: DateTime!
+  id: ID!
+  reason: String
+  recipient: String!
+  status: EmailStatus!
+  type: EmailType!
+  updatedAt: DateTime!
+}
+
+type EmailLogEdge {
+  cursor: String!
+  node: EmailLog!
+}
+
+enum EmailStatus {
+  BLOCKED
+  BOUNCED
+  CREATED
+  DEFERRED
+  DELIVERED
+  DROPPED
+  PROCESSED
+  SENT
+}
+
+enum EmailType {
+  AppNotification
+  CollaboratorInvitation
+  EmailVerification
+  ExportFinished
+  MemberConfirmation
+  MemberInvitation
+  Notification
+  ResetPassword
+  Unknown
+}
+
+type Embed {
+  author: String
+  author_url: String
+  description: String
+  html: String
+  id: ID!
+  options: String
+  provider_name: String
+  thumbnail_height: String
+  thumbnail_url: String
+  thumbnail_width: String
+  title: String
+  type: String
+  url: String!
+}
+
+input EmbedInput {
+  options: String
+  url: String!
+}
+
+type Emoji {
+  id: ID!
+  text: String!
+}
+
+input EntityListFilterByInput {
+  key: String!
+  operator: EntityListFilterByOperator!
+  value: String!
+}
+
+enum EntityListFilterByOperator {
+  contains
+  endsWith
+  equals
+  gt
+  gte
+  hasValue
+  in
+  lt
+  lte
+  nin
+  not
+  startsWith
+}
+
+type EntityPermissions {
+  actions: [ActionPermissions!]!
+  id: String!
+}
+
+type EntityReport {
+  data: [ReportData!]
+  description: String
+  endDate: DateTime
+  entity: ReportableEntity
+  entityId: ID!
+  entityType: ReportableEntityType!
+  startDate: DateTime
+  tooltip: String
+}
+
+type EntityScopes {
+  id: String!
+  scopes: [String!]!
+}
+
+type EventType {
+  description: String!
+  name: String!
+  noun: String!
+  requiredScope: String!
+  shortDescription: String!
+  verb: EventVerb!
+}
+
+enum EventVerb {
+  ACCEPTED
+  ADDED
+  BANNED
+  BLOCKED
+  CANCELED
+  CLICKED
+  CREATED
+  CUSTOM
+  DELETED
+  EXPIRED
+  FAILED
+  FOLLOWED
+  HIDDEN
+  IMPRESSION
+  INSTALLED
+  LOGGED_IN
+  MARKED_FOR_PURGE
+  NOT_ASSIGNED
+  PERMITTED
+  PING
+  PINGED
+  PINNED
+  PUBLISHED
+  PURGED
+  REJECTED
+  REMOVED
+  RESENT
+  REVOKED
+  SENT
+  SIGNED_UP
+  SUCCEEDED
+  SUSPENDED
+  UNBLOCKED
+  UNFOLLOWED
+  UNHIDDEN
+  UNINSTALLED
+  UNPINNED
+  UNPUBLISHED
+  UNSUSPENDED
+  UNUSED
+  UNVERIFIED
+  UPDATED
+  USED
+  VERIFIED
+  VIEWED
+}
+
+type Export {
+  createdAt: DateTime!
+  endedAt: DateTime
+  fields: [String!]!
+  file: File
+  fileId: ID!
+  filterBy: [MemberListFilterBy!]
+  id: ID!
+  networkId: ID!
+  startedAt: DateTime
+  status: ExportStatus!
+  updatedAt: DateTime!
+}
+
+type ExportEdge {
+  cursor: String!
+  node: Export!
+}
+
+input ExportInput {
+  fields: [String!]!
+  filterBy: [MemberListFilterByInput!]
+  query: String
+}
+
+enum ExportListOrderByEnum {
+  CreatedAt
+  UpdatedAt
+}
+
+enum ExportStatus {
+  Done
+  Expired
+  Failed
+  InProgress
+  Initialized
+}
+
+type ExtraProperty {
+  key: String!
+  value: String!
+}
+
+enum ExtraPropertyEntityType {
+  Member
+  Network
+}
+
+type File {
+  downloadUrl: String!
+  extension: String!
+  id: ID!
+  name: String
+  size: Int
+  status: MediaStatus
+  url: String!
+}
+
+enum FilterOperator {
+  And
+  Or
+}
+
+enum Filtername {
+  and
+  leaf
+  or
+}
+
+input FiltersInput {
+  groupFilters: [GroupFiltersInput!]!
+  operator: FilterOperator!
+}
+
+enum FlaggedType {
+  MEMBER
+  SYSTEM
+}
+
+type Footer {
+  urls: [FooterUrl!]!
+}
+
+type FooterUrl {
+  title: String!
+  url: String!
+}
+
+input GeoBoundingBoxInput {
+  bottomRight: GeoPointInput!
+  topLeft: GeoPointInput!
+}
+
+input GeoPointInput {
+  lat: Float!
+  lon: Float!
+}
+
+input GeoRadiusInput {
+  center: GeoPointInput!
+  radius: Float!
+}
+
+type GlobalToken {
+  accessToken: String!
+  email: String!
+}
+
+input GlobalTokenInput {
+  email: String!
+  verificationCode: String!
+}
+
+type Glyph {
+  id: ID!
+  text: String!
+  variant: GlyphMediaVariant!
+}
+
+enum GlyphMediaVariant {
+  emoji
+  icon
+}
+
+input GroupFiltersInput {
+  matchFilters: [MatchFilterInput!]!
+  operator: FilterOperator!
+}
+
+enum HomeSpaceType {
+  Default
+  NewUser
+  ReturningUser
+}
+
+type HubContent {
+  attachmentIds: [ID!]!
+  attachments: [File!]
+  createdAt: DateTime!
+  description: String
+  embedIds: [ID!]!
+  embeds: [Embed!]
+  fields: [HubContentCustomField!]
+  id: ID!
+  imageIds: [ID!]!
+  images: [Media!]
+  language: String
+
+  # Whether the post is locked
+  locked: Boolean!
+  postTypeId: ID!
+  publishedAt: DateTime
+  slug: String
+  tagIds: [String!]
+  thumbnail: Media
+  thumbnailId: String
+  title: String
+  updatedAt: DateTime!
+}
+
+type HubContentCustomField {
+  key: String!
+  relationEntities: HubContentCustomFieldRelation
+  value: String
+}
+
+type HubContentCustomFieldRelation {
+  medias: [Media!]!
+}
+
+type Image {
+  cropHeight: Int
+  cropWidth: Int
+  cropX: Int!
+  cropY: Int!
+  cropZoom: Float!
+  dominantColorHex: String
+  downloadUrl: String!
+  dpi: Float
+  height: Float
+  id: ID!
+  name: String
+  status: MediaStatus
+  url: String!
+  urls: MediaUrls
+  width: Float
+}
+
+input ImpersonateLoginToNetworkInput {
+  memberId: ID!
+  networkId: ID!
+}
+
+union In = Space
+
+type InputPathPermissions {
+  isAuthorized: IsAuthorized!
+  path: String!
+  values: [ValuePermissions!]!
+}
+
+input InstallAppInput {
+  context: PermissionContext
+  entityId: String
+  permissions: [PrimaryScopes!]
+  templatesMappings: AppInstallationTemplatesMappingsInput
+}
+
+type IntValue {
+  int: Int!
+}
+
+input InteractWithAppInput {
+  appId: String!
+  callbackId: String
+  dynamicBlockKey: String
+  inputs: String
+  interactionId: String!
+  preview: Boolean
+  props: String
+  shortcutKey: String
+}
+
+# Input for inviting members.
+input InviteMembersInput {
+  # The ids of the default spaces the invitees have.
+  defaultSpacesIds: [ID!]
+
+  # When does the invitations expire? Empty for no expiration.
+  expiresAt: DateTime
+
+  # Custom message for invitation.
+  invitationMessage: String
+
+  # The details of the invitees
+  invitees: [InviteeInput!]!
+
+  # The id of the role the invitees have.
+  roleId: ID
+}
+
+input InviteeInput {
+  # The ids of the default spaces this invitee has.
+  defaultSpacesIds: [ID!]
+
+  # The email address of the invitee.
+  email: String!
+
+  # The name of the invitee.
+  name: String
+
+  # The role id of the invitee.
+  roleId: ID
+}
+
+type Invoice {
+  cardLastFourDigits: String
+  currency: String!
+  date: DateTime!
+  invoiceUrl: String
+  status: InvoiceStatus!
+  total: Float!
+}
+
+enum InvoiceStatus {
+  cancelled
+  failed
+  paid
+  pending
+}
+
+type IsAuthorized {
+  authorized: Boolean!
+  reason: UnauthorizedReason
+  requiredPlan: PlanName
+}
+
+input JoinNetworkInput {
+  captchaToken: String
+  createdAt: DateTime
+  email: String!
+  externalId: String
+  externalUrl: String
+  name: String!
+  password: String!
+  phone: String
+  tagline: String
+  updatedAt: DateTime
+  username: String
+  verified: Boolean
+}
+
+input JoinNetworkWithLinkInput {
+  captchaToken: String
+  email: String!
+  invitationLinkId: String!
+  name: String!
+  password: String!
+  username: String
+}
+
+input JoinNetworkWithTokenInput {
+  captchaToken: String
+  name: String!
+  password: String!
+  token: String!
+  username: String
+}
+
+type JwtSsoAuthUrls {
+  authorizationUrl: String
+  signUpUrl: String
+}
+
+type KeyValue {
+  key: String!
+  value: String
+}
+
+type LeaderboardItem {
+  member: Member
+  memberId: String!
+  score: Float!
+}
+
+input LoginNetworkWithPasswordInput {
+  password: String!
+  usernameOrEmail: String!
+}
+
+input LoginSupportWithSsoCodeInput {
+  code: String!
+  hd: String!
+  prompt: String!
+  scope: String!
+  state: String!
+}
+
+input LoginWithSamlResponseInput {
+  relayState: String!
+  samlResponse: String!
+}
+
+input LoginWithSsoCodeInput {
+  code: String
+  hd: String
+  oauth_token: String
+  oauth_verifier: String
+  prompt: String
+  scope: String
+  state: String
+}
+
+input LogoutNetworkInput {
+  sessionId: String!
+}
+
+input MassActionFilters {
+  entityIds: [ID!]
+  filterBy: [MemberListFilterByInput!]
+  query: String
+}
+
+type MassActionFiltersModel {
+  entityIds: [ID!]
+  filterBy: [MemberListFilterBy!]
+  query: String
+}
+
+type MassActionRequest {
+  action: MassActionRequestAction!
+  context: MassActionRequestContext!
+  createdAt: DateTime!
+  createdById: String!
+  endedAt: DateTime
+  entitiesCount: Int
+  failedCount: Int
+  filters: MassActionFiltersModel!
+  id: ID!
+  networkId: ID!
+  processedCount: Int
+  startedAt: DateTime
+  status: MassActionRequestStatus!
+  updatedAt: DateTime!
+}
+
+enum MassActionRequestAction {
+  Accept
+  AddTag
+  AddToSpace
+  AssignBadge
+  Create
+  Delete
+  Expire
+  Flag
+  Follow
+  Hide
+  Lock
+  Move
+  Pin
+  Publish
+  Reject
+  RemoveTag
+  Resend
+  Revoke
+  RevokeBadge
+  Suspend
+  Unflag
+  Unfollow
+  Unhide
+  Unpin
+  Update
+  Verify
+}
+
+enum MassActionRequestContext {
+  Member
+  MemberInvitation
+  ModerationItem
+  Post
+  Space
+  Tag
+}
+
+input MassActionRequestExtraPropertiesInput {
+  badgeIds: [ID!]
+  includeReplies: Boolean
+  postTypeId: ID
+  removeAllTags: Boolean
+  spaceId: ID
+  tagIds: [ID!]
+  tagNames: [ID!]
+  updatePostProperties: MassActionUpdatePostPropertiesInput
+}
+
+input MassActionRequestInput {
+  action: MassActionRequestAction!
+  context: MassActionRequestContext!
+  extraProperties: MassActionRequestExtraPropertiesInput
+  filters: MassActionFilters!
+  waitForConfirmation: Boolean
+}
+
+enum MassActionRequestStatus {
+  Done
+  Failed
+  InProgress
+  Initialized
+  WaitingForConfirmation
+}
+
+input MassActionUpdatePostPropertiesInput {
+  ownerId: String
+  publishedAt: DateTime
+}
+
+input MatchFilterInput {
+  any: [String!]
+  containsText: String
+  doesNotContainText: String
+  except: [String!]
+  geoBoundingBox: GeoBoundingBoxInput
+  geoRadius: GeoRadiusInput
+  is: String
+  isEmpty: Boolean
+  isNot: String
+  isNull: Boolean
+  key: String!
+  range: RangeInput
+  valuesCount: ValuesCountInput
+}
+
+union Media = Emoji | File | Glyph | Image
+
+type MediaBase {
+  createdAt: DateTime!
+  id: ID!
+  purgeRequestedAt: DateTime!
+  purgedAt: DateTime!
+  remoteUrl: String
+  status: MediaStatus!
+  type: MediaType!
+  uploaded: Boolean!
+}
+
+type MediaLimits {
+  fileSizeLimit: Float!
+  fileTypesLimit: [String!]!
+  imageSizeLimit: Float!
+  imageTypesLimit: [String!]!
+}
+
+type MediaNetworkSettings {
+  fileSizeLimit: Float!
+  fileTypesLimit: [String!]!
+  imageSizeLimit: Float!
+  imageTypesLimit: [String!]!
+}
+
+enum MediaStatus {
+  Ok
+  Pending
+  Removed
+}
+
+enum MediaType {
+  Emoji
+  File
+  Glyph
+  Image
+}
+
+type MediaUrls {
+  full: String!
+  large: String!
+  medium: String!
+  small: String!
+  thumb: String!
+}
+
+type Member {
+  activeSession: MemberSession
+  attributes: MemberAttributes!
+    @deprecated(reason: "Has been replaced by locale field")
+  authMemberProps: MemberAuthMemberProps
+  badges: [MemberBadge!]
+  banner: Media
+  bannerId: ID
+  blockedMemberIds: [String!]
+  blockedMembers: [Member!]
+  createdAt: DateTime!
+  displayName: String @deprecated(reason: "Has been replaced with name")
+  email: String
+  emailStatus: MemberEmailStatus
+  externalId: ID
+  externalUrl: String
+  extraProperties(keys: [String!]): [ExtraProperty!]
+  fields: [CustomField!]
+  flagged: Boolean!
+  id: ID!
+  lastSeen: DateTime
+  lastSeenAt: DateTime
+  locale: String!
+  name: String
+  network: Network
+  networkId: ID!
+  newEmail: String
+  overrideTeammate: Boolean
+    @deprecated(reason: "Use the teammate field instead")
+  profilePicture: Media
+  profilePictureId: ID
+  relativeUrl: String
+  role: Role
+  roleId: ID!
+  score: Int
+  sessions: [MemberSession!]
+  settings: MemberSettings
+  shortcuts: [Shortcut!]
+  spaces(exploreOnly: Boolean, limit: Int!): PaginatedSpace
+  staffReasons: [StaffReason!]
+  status: MemberStatus!
+  subscribersCount: Int
+  tagline: String
+  teammate: Boolean!
+  updatedAt: DateTime!
+  url: String
+  username: String!
+  verifiedAt: DateTime
+}
+
+type MemberAttributes {
+  locale: String!
+}
+
+type MemberAuthMemberProps {
+  canSendPrivateMessages: Boolean
+  context: PermissionContext!
+  permissions: [ActionPermissions!]
+  scopes: [String!]
+  subscribed: Boolean
+}
+
+type MemberBadge {
+  backgroundColor: String
+  badge: Badge
+  badgeId: ID!
+  image: Media
+  imageId: ID
+  longDescription: String
+  shortDescription: String!
+  text: String
+  textColor: String
+  type: BadgeType!
+}
+
+type MemberEdge {
+  cursor: String!
+  node: Member!
+}
+
+enum MemberEmailStatus {
+  notDelivered
+  sent
+  spammed
+  verified
+}
+
+type MemberForSpaceInvitation {
+  member: Member!
+  memberId: ID!
+  spaceAffiliation: SpaceMemberAffiliation!
+}
+
+type MemberInvitation {
+  createdAt: DateTime!
+  emailLog: EmailLog
+  emailLogs: [EmailLog!]
+  expiresAt: DateTime!
+  id: ID!
+  invitationMessage: String
+  invitee: Member
+  inviteeEmail: String!
+  inviteeId: ID
+  inviteeName: String
+  inviter: Member
+  inviterId: ID!
+  joinedAt: DateTime
+  network: Network
+  networkId: ID!
+  role: Role
+  roleId: ID!
+  status: MemberInvitationStatus!
+}
+
+type MemberInvitationEdge {
+  cursor: String!
+  node: MemberInvitation!
+}
+
+input MemberInvitationFilterByInput {
+  key: String!
+  operator: MemberInvitationFilterByOperator!
+  value: String!
+}
+
+enum MemberInvitationFilterByOperator {
+  contains
+  equals
+  gt
+  gte
+  lt
+  lte
+  not
+}
+
+type MemberInvitationLink {
+  createdAt: DateTime!
+  id: ID!
+  inviter: Member
+  link: String!
+  network: Network
+}
+
+enum MemberInvitationStatus {
+  Expired
+  Pending
+  Revoked
+  accepted
+  delivered
+  notDelivered
+  notSent
+  rejected
+  sent
+  spammed
+}
+
+type MemberListFilterBy {
+  key: String!
+  operator: MemberListFilterByOperator!
+  value: String!
+}
+
+input MemberListFilterByInput {
+  key: String!
+  operator: MemberListFilterByOperator!
+  value: String!
+}
+
+enum MemberListFilterByOperator {
+  contains
+  endsWith
+  equals
+  gt
+  gte
+  hasValue
+  in
+  lt
+  lte
+  nin
+  not
+  startsWith
+}
+
+input MemberPermissionsSettingsInput {
+  canDeleteAccount: Boolean!
+}
+
+type MemberPrivateMessagingSettings {
+  privateMessagingEnabled: Boolean!
+}
+
+input MemberPrivateMessagingSettingsInput {
+  privateMessagingEnabled: Boolean!
+}
+
+type MemberSession {
+  active: Boolean!
+  country: String
+  createdAt: DateTime!
+  deviceBrand: String
+  id: ID!
+  ip: String!
+  lastActivityAt: DateTime!
+  os: String
+  osVersion: String
+}
+
+type MemberSettings {
+  privateMessaging: MemberPrivateMessagingSettings
+}
+
+input MemberSettingsInput {
+  privateMessaging: MemberPrivateMessagingSettingsInput
+}
+
+enum MemberStatus {
+  BLOCKED
+  DELETED
+  REMOVED
+  Suspended
+  UNVERIFIED
+  VERIFIED
+}
+
+enum MemberStatusInput {
+  BLOCKED
+  Suspended
+  UNVERIFIED
+  VERIFIED
+}
+
+type MembersPermissionSettings {
+  canDeleteAccount: Boolean!
+}
+
+type Migration {
+  id: ID!
+  networkId: ID!
+  requesterId: ID!
+  stage: MigrationStage!
+  status: MigrationStatus!
+}
+
+type MigrationFieldError {
+  field: String!
+  message: String!
+}
+
+type MigrationFileResult {
+  file: String!
+  insertedRows: Int!
+  rowErrors: [MigrationRowErrors!]!
+  skippedRows: Int!
+}
+
+type MigrationRowErrors {
+  externalId: String
+  fieldErrors: [MigrationFieldError!]!
+  message: String!
+  rowNumber: Int!
+}
+
+enum MigrationStage {
+  MEDIA
+  MEMBER
+  POST
+  SPACE
+  SPACE_MEMBER
+  TAG
+}
+
+enum MigrationStatus {
+  DONE
+  IN_PROGRESS
+}
+
+enum ModerationEntityType {
+  MEMBER
+  POST
+}
+
+type ModerationItem {
+  createdAt: DateTime!
+  description: String
+  entity: ModerationItemEntity
+  flaggedBy: FlaggedType!
+  id: String!
+  memberId: String
+  moderator: Member
+  reporters(
+    after: String
+    before: String
+    limit: Int!
+    offset: Int
+    reverse: Boolean
+  ): PaginatedModerationItemReporter
+  spaceId: String
+  status: ModerationStatus!
+  updatedAt: DateTime!
+}
+
+type ModerationItemEdge {
+  cursor: String!
+  node: ModerationItem!
+}
+
+union ModerationItemEntity = Member | Post
+
+type ModerationItemReporter {
+  createdAt: DateTime!
+  description: String
+  id: String!
+  reportCategory: ReportCategory!
+  reporter: Member
+  updatedAt: DateTime!
+}
+
+type ModerationItemReporterEdge {
+  cursor: String!
+  node: ModerationItemReporter!
+}
+
+type ModerationMemberSettings {
+  minimumHoursToPost: Int!
+  minimumHoursToReply: Int!
+}
+
+input ModerationMemberSettingsInput {
+  minimumHoursToPost: Int!
+  minimumHoursToReply: Int!
+}
+
+enum ModerationOpMode {
+  Purge
+  Retain
+}
+
+type ModerationSettings {
+  akismet: Boolean!
+  blackListPostTypeIds: [String!]!
+  blackListSpaceIds: [String!]!
+  customBlacklist: [String!]
+  enableBlacklisting: Boolean!
+  member: ModerationMemberSettings!
+  oopSpam: Boolean!
+  preventPublish: Boolean!
+  useDefaultBlacklisting: Boolean
+}
+
+enum ModerationStatus {
+  ACCEPTED
+  PendingConfirmation
+  REJECTED
+  REVIEW
+}
+
+type Mutation {
+  addEmoji(input: CreateEmojiInput!): Emoji!
+    @deprecated(
+      reason: "Use Glyphs instead, just update the media id with `emoji/...`"
+    )
+  addEmojis(input: [CreateEmojiInput!]!): [Emoji!]!
+    @deprecated(
+      reason: "Use Glyphs instead, just update the media id with `emoji/...`"
+    )
+
+  # Add the FCM token to the subscriber settings.
+  addFcmTokenToSubscriberSettings(token: String!): Action!
+  addGroup(input: CreateCollectionInput!): Collection!
+    @deprecated(reason: "This mutation will be replaced by createCollection")
+  addImage(input: CreateImageInput!): SignedUrl!
+    @deprecated(reason: "This mutation will be replaced by createImages")
+  addImages(input: [CreateImageInput!]!): [SignedUrl!]!
+    @deprecated(reason: "This mutation will be replaced by createImages")
+  addMedias(input: AddMediasInput!): [SignedUrl!]!
+    @deprecated(
+      reason: "This mutation will be replaced by createImages or createEmojis"
+    )
+  addMemberSchemaField(input: CustomFieldSchemaInput!): Network!
+  addModerationReport(input: CreateReportInput!): ModerationItem!
+    @deprecated(
+      reason: "This mutation will be replaced by createModerationReport"
+    )
+  addNetwork(input: AddNetworkInput!): AuthTokenWithOtp!
+    @deprecated(reason: "This mutation will be replaced by createNetwork")
+  addNewDomain(input: DomainAvailabilityInput!): DomainTransferStatus!
+    @deprecated(reason: "This mutation will be replaced by updateNewDomain")
+  addPost(input: CreatePostInput!, spaceId: ID!): Post!
+    @deprecated(reason: "This mutation will be replaced by createPost")
+  addPostTypeField(id: ID!, input: CustomFieldSchemaInput!): PostType!
+  addReaction(input: AddReactionInput!, postId: ID!): Action!
+  addReply(input: CreatePostInput!, postId: ID!): Post!
+    @deprecated(reason: "This mutation will be replaced by createReply")
+  addSpace(input: CreateSpaceInput!): Space!
+    @deprecated(reason: "This mutation will be replaced by createSpace")
+  addSpaceMembers(input: [AddSpaceMemberInput!]!, spaceId: ID!): [SpaceMember!]!
+  addTemplateToNetwork(
+    excludeEntityTypes: [TemplateEntityType!]
+    templateId: String!
+  ): TemplateRequest!
+  addTrialPlan(trial: AddTrialInput!): Plan
+    @deprecated(reason: "This mutation is for the old billing")
+  approveSpaceJoinRequest(spaceId: ID!, spaceJoinRequestId: ID!): Action!
+    @deprecated(
+      reason: "This mutation will be replaced by approveSpaceMembershipRequest"
+    )
+  approveSpaceMembershipRequest(
+    spaceId: ID!
+    spaceMembershipRequestId: ID!
+  ): Action!
+  archiveMemberSchemaField(key: String!): Network!
+  archivePostType(id: ID!): PostType!
+  archivePostTypeField(id: ID!, key: String!): PostType!
+  assignBadge(id: String!, input: AssignOrRevokeBadgeInput!): Action!
+  blockMember(memberId: String!): Action!
+  callback(
+    appId: ID!
+    callbackId: ID!
+    context: PermissionContext!
+    dynamicBlockId: ID
+    entityId: ID
+    inputs: String
+  ): CallbackResponse!
+  cancelDomainTransfer: Action!
+  cancelEmailUpdate(id: ID): Action!
+  cancelNetworkDeletion: Action!
+  changeHomepage(spaceId: String!, type: HomeSpaceType = Default): Action!
+  changeNetworkSubscriptionPlan(name: PlanName!): Network!
+  clearNewDomain: Action!
+  clearNotificationsCount: Action!
+  closeSpace(spaceId: ID!): Action!
+  commitDomainTransfer: Action!
+  confirmMassActionRequest(massActionRequestId: String!): MassActionRequest!
+  confirmResetPassword(input: ConfirmResetPasswordInput!): Action!
+  createAccessGroup(input: CreateAccessGroupInput!): AccessGroup!
+  createBadge(input: CreateBadgeInput!): Badge!
+  createBillingPortalSession(returnUrl: String!): BillingPortalSession!
+  createCollection(input: CreateCollectionInput!): Collection!
+  createEmojis(input: [CreateEmojiInput!]!): [Emoji!]!
+    @deprecated(
+      reason: "Use Glyphs instead, just update the media id with `emoji/...`"
+    )
+  createExportMemberRequest(input: ExportInput!): Export!
+  createFiles(input: [CreateFileInput!]!): [SignedUrl!]!
+  createImages(input: [CreateImageInput!]!): [SignedUrl!]!
+  createMassActionRequest(input: MassActionRequestInput!): MassActionRequest!
+  createModerationReport(input: CreateReportInput!): ModerationItem!
+  createNetwork(input: AddNetworkInput!): AuthTokenWithOtp!
+  createPermission(input: CreatePermissionInput!): Permission!
+
+  # Create a new post in a space.
+  createPost(input: CreatePostInput!, spaceId: ID!): Post!
+
+  # Create a new post type.
+  createPostType(input: CreatePostTypeInput!): PostType!
+  createReply(input: CreatePostInput!, postId: ID!): Post!
+  createReport(input: CreateReportInput!): ModerationItem!
+    @deprecated(
+      reason: "This mutation will be replaced by createModerationReport"
+    )
+
+  # Create a space inside your community.
+  createSpace(input: CreateSpaceInput!): Space!
+  createSpaceFromTemplate(
+    excludeEntityTypes: [TemplateEntityType!]
+    input: CreateSpaceInput!
+    style: String
+    templateId: String!
+  ): TemplateRequest!
+  createSubscriptionCheckoutSession(
+    cancelUrl: String!
+    priceId: String!
+    successUrl: String!
+  ): SubscriptionCheckoutSession!
+
+  # Create a new tag
+  createTag(input: CreateTagInput!): Tag!
+  createTemplate(input: CreateTemplateInput!): Template!
+  declineSpaceJoinRequest(spaceId: ID!, spaceJoinRequestId: ID!): Action!
+    @deprecated(
+      reason: "This mutation will be replaced by declineSpaceMembershipRequest"
+    )
+  declineSpaceMembershipRequest(
+    spaceId: ID!
+    spaceMembershipRequestId: ID!
+  ): Action!
+  deleteAccessGroup(id: ID!): Action!
+  deleteBadge(id: String!): Action!
+  deleteCollection(id: ID!): Action!
+  deleteMember(id: ID!): Action!
+  deleteMemberSchemaField(key: String!): Network!
+  deleteNetwork: Action!
+  deleteNotification(notificationId: ID!): Action!
+  deleteNotifications(ids: [ID!]): Action!
+  deletePageCustomResponse(path: String!): Action!
+  deletePermission(id: ID!): Action!
+  deletePost(id: ID!): Action!
+  deletePostTypeField(id: ID!, key: String!): PostType!
+  deleteSpace(id: ID!): Action!
+  deleteSpacePostTypes(postTypeIds: [ID!]!, spaceId: ID!): Action!
+  deleteSsoMembership(memberId: String!, type: SsoType!): Action!
+  deleteTag(id: ID!): Action!
+  deleteTemplate(id: String!): Action!
+  doResetPassword(input: UpdatePasswordWithTokenInput!): Action!
+    @deprecated(
+      reason: "This mutation will be replaced by updatePasswordWithToken"
+    )
+  editImage(imageId: String!, input: UpdateImageInput!): Image!
+    @deprecated(reason: "This mutation will be replaced by updateImage")
+  extendCurrentTrial(newEndDate: DateTime!): Plan
+    @deprecated(reason: "This mutation is for the old billing")
+  globalAddAppCollaborator(
+    appId: String!
+    input: AddAppCollaboratorInput!
+  ): AppCollaborator! @deprecated(reason: "Use the global gateway instead")
+  globalCreateApp(input: CreateAppInput!): App!
+    @deprecated(reason: "Use the global gateway instead")
+  globalCreateEmojis(input: [CreateEmojiInput!]!): [Emoji!]!
+    @deprecated(
+      reason: "Use Glyphs instead, just update the media id with `emoji/...`"
+    )
+  globalCreateImages(input: [CreateImageInput!]!): [SignedUrl!]!
+    @deprecated(reason: "Use the global gateway instead")
+  globalDeleteApp(id: ID!): Action!
+    @deprecated(reason: "Use the global gateway instead")
+  globalDeleteAppSetting(
+    context: PermissionContext!
+    entityId: ID
+    networkId: ID!
+  ): AppSetting! @deprecated(reason: "Use the global gateway instead")
+  globalPublishAppPrivately(appId: ID!, networkId: ID!): AppPublication!
+    @deprecated(reason: "Use the global gateway instead")
+  globalRegenerateClientSecret(appId: ID!): App!
+    @deprecated(reason: "Use the global gateway instead")
+  globalRemoveAppCollaborator(appId: String!, collaboratorId: String!): Action!
+    @deprecated(reason: "Use the global gateway instead")
+  globalTestAppWebhook(appId: ID!, input: TestAppWebhookInput!): Action!
+    @deprecated(reason: "Use the global gateway instead")
+  globalUnPublishAppPrivately(appId: ID!, networkId: ID!): Action!
+    @deprecated(reason: "Use the global gateway instead")
+  globalUpdateApp(id: ID!, input: UpdateAppInput!): App!
+    @deprecated(reason: "Use the global gateway instead")
+  globalUpdateAppSetting(
+    context: PermissionContext!
+    entityId: ID
+    networkId: ID!
+    settings: String!
+  ): AppSetting! @deprecated(reason: "Use the global gateway instead")
+  hidePost(id: ID!): Action!
+  impersonateLoginToNetwork(
+    input: ImpersonateLoginToNetworkInput!
+  ): AuthInfoWithOtp!
+  installApp(appId: ID!, input: InstallAppInput): AppInstallation!
+  installAppOnAuthMember(appId: ID!, input: InstallAppInput): AppInstallation!
+  interactWithApps(
+    context: PermissionContext!
+    entityId: ID
+    input: [InteractWithAppInput!]!
+  ): [AppInteraction!]!
+
+  # Invite members to join your community.
+  inviteMembers(input: InviteMembersInput!): [MemberInvitation!]!
+  joinNetwork(input: JoinNetworkInput!): AuthToken!
+  joinNetworkWithInvitationLink(input: JoinNetworkWithLinkInput!): AuthToken!
+  joinNetworkWithToken(input: JoinNetworkWithTokenInput!): AuthToken!
+  joinSpace(spaceId: ID!): Action!
+  leaveSpace(spaceId: ID!): Action!
+  loginNetwork(input: LoginNetworkWithPasswordInput!): AuthToken!
+  loginNetworkWithPassword(input: LoginNetworkWithPasswordInput!): AuthToken!
+  loginWithSamlResponse(input: LoginWithSamlResponseInput!): AuthToken!
+  loginWithSsoCode(input: LoginWithSsoCodeInput!): AuthToken!
+  logoutMemberSessions(memberId: String!): Action!
+  logoutNetwork(input: LogoutNetworkInput): Action!
+  modifySubscriptionAddon(priceId: String!, quantity: Float!): Action!
+  movePost(
+    convertPost: ConvertPostInput
+    id: ID!
+    sendNotification: Boolean
+    spaceId: ID!
+  ): Post!
+  movePosts(
+    convertPost: ConvertPostInput
+    ids: [ID!]!
+    sendNotification: Boolean
+    spaceId: ID!
+  ): [Post!]!
+  nominateNewDomain(domain: String!): Action!
+  organizeCollections(ids: [String!]!): Action!
+  organizeGroupSpaces(groupId: String!, spaceIds: [String!]!): Action!
+    @deprecated(
+      reason: "This mutation will be replaced by organizeSpacesInCollection"
+    )
+  organizeGroups(groupIds: [String!]!): Action!
+    @deprecated(reason: "This mutation will be replaced by organizeCollections")
+  organizeSpacesInCollection(
+    collectionId: String!
+    spaceIds: [String!]!
+  ): Action!
+  pinPostToSpace(postId: ID!): Action!
+  pinReplyToPost(postId: ID!, replyId: ID!): Action!
+  publishAppPrivately(appId: ID!): AppPublication!
+  publishTemplate(id: String!): Action!
+  purchase(input: PurchaseInput!): BillingSubscription
+    @deprecated(reason: "Use new billing APIs")
+  purgeMedias(input: PurgeMediasInput!): [MediaBase!]!
+  readNotification(notificationId: ID!): Action!
+  readNotifications(ids: [ID!]): Action!
+  readSpace(date: DateTime!, spaceId: String!): Action!
+
+  # Remove the FCM token from the subscriber settings.
+  removeFcmTokenFromSubscriberSettings(token: String!): Action!
+  removeGroup(groupId: ID): Action!
+    @deprecated(reason: "This mutation will be replaced by deleteCollection")
+  removeMember(memberId: ID!): Action!
+    @deprecated(reason: "This mutation will be replaced by deleteMember")
+  removeNetwork: Action!
+    @deprecated(reason: "This mutation will be replaced by deleteNetwork")
+  removePost(postId: ID!): Action!
+    @deprecated(reason: "This mutation will be replaced by deletePost")
+  removeReaction(participantId: String, postId: ID!, reaction: String!): Action!
+  removeSpaceMembers(memberIds: [ID!]!, spaceId: ID!): [Action!]!
+
+  # Reorder a single badge, moving it directly after the badge with specified using previousBadgeId or to the beginning of the list if not provided
+  reorderBadge(
+    # The id of the badge to be moved
+    id: String!
+    input: ReorderBadgeInput!
+  ): Badge!
+
+  # Reorder all badges for the network, using the badgeOrderId input field
+  reorderBadges(input: ReorderBadgesInput!): Action!
+  reorderMemberSchemaFields(input: [ReOrderSchemaFieldInput!]!): Network!
+  reorderPostTypeFields(id: ID!, input: [ReOrderSchemaFieldInput!]!): PostType!
+  requestGlobalTokenCode(input: RequestGlobalTokenInput!): Action!
+    @deprecated(reason: "Use the global gateway instead")
+  requestSpaceMembership(spaceId: ID!): SpaceJoinRequest!
+  resendGlobalTokenCode(input: RequestGlobalTokenInput!): Action!
+    @deprecated(reason: "Use the global gateway instead")
+  resendMemberInvitation(id: ID!): Action!
+  resendVerification: Action!
+  resetPassword(input: ResetPasswordInput!): Action!
+    @deprecated(
+      reason: "This mutation will be replaced by sendResetPasswordEmail"
+    )
+  revokeBadge(id: String!, input: AssignOrRevokeBadgeInput!): Action!
+  revokeMemberInvitation(id: ID!): Action!
+  runMigration(id: String!): Migration!
+  sendResetPasswordEmail(email: String!): Action!
+  setPrivatelyPublishedApps(ids: [ID!]!): [AppPublication!]!
+  ssoRedirect(input: LoginWithSsoCodeInput!): AuthToken!
+    @deprecated(reason: "This mutation will be replaced by loginWithSsoCode")
+
+  # Subscribe the auth member to the given publisher.
+  subscribe(publisherId: String!): Action!
+  supportSsoRedirect(input: LoginSupportWithSsoCodeInput!): SupportAuthToken!
+    @deprecated(
+      reason: "This mutation will be replaced by loginSupportWithSsoCode"
+    )
+  suspendMember(memberId: String!): Action!
+  syncTemplate(id: String!, upsertKey: String): Template!
+  transferToNewDomain: Action!
+  unArchiveMemberSchemaField(key: String!): Network!
+  unPublishAppPrivately(appId: ID!, networkId: ID!): ActionStatus!
+  unarchivePostType(id: ID!): PostType!
+  unarchivePostTypeField(id: ID!, key: String!): PostType!
+  unblockMember(memberId: String!): Action!
+  unhidePost(id: ID!): Action!
+  uninstallApp(appInstallationId: ID!, reason: String): AppInstallation
+  unpinPostFromSpace(postId: ID!): Action!
+  unpinReplyFromPost(postId: ID!, replyId: ID!): Action!
+  unpublishTemplate(id: String!): Action!
+  unsetHomepage(type: HomeSpaceType!): Action!
+
+  # Unsubscribe the auth member from the given publisher.
+  unsubscribe(publisherId: String!): Action!
+  unsubscribeFromNotification(input: UnsubscribeWithTokenInput!): Action!
+  unsuspendMember(memberId: String!): Action!
+  updateAccessGroup(id: ID!, input: UpdateAccessGroupInput!): AccessGroup!
+  updateAppInstallation(
+    appInstallationId: ID!
+    input: UpdateAppInstallationInput!
+  ): AppInstallation!
+  updateAppNetworkSettings(appId: ID!, settings: String!): AppAction!
+  updateAppSpaceSetting(appId: ID!, settings: String!, spaceId: ID!): AppAction!
+  updateAppStanding(appId: ID!, standing: StoreItemStanding!): ActionStatus!
+  updateAppStatus(appId: ID!, status: StoreItemStatus!): ActionStatus!
+  updateAuthMember(input: UpdateMemberInput!): Member!
+  updateBadge(id: String!, input: UpdateBadgeInput!): Badge!
+  updateBillingDetails(input: BillingDetailsInput!): BillingDetails
+    @deprecated(reason: "Use new billing APIs")
+  updateCollection(id: ID!, input: UpdateCollectionInput!): Action!
+  updateCustomSso(input: UpdateCustomSsoInput!): Sso!
+  updateDefaultSsoStatus(sso: DefaultSsoType!, status: SsoStatus!): Action!
+  updateFile(id: String!, input: UpdateFileInput!): File!
+  updateGroup(groupId: ID, input: UpdateCollectionInput!): Action!
+    @deprecated(reason: "This mutation will be replaced by updateCollection")
+  updateImage(id: String!, input: UpdateImageInput!): Image!
+  updateJwtSso(input: UpdateJwtSsoInput!): Sso!
+  updateMember(id: ID, input: UpdateMemberInput!): Member!
+  updateMemberInvitation(
+    id: ID!
+    input: UpdateMemberInvitationInput!
+  ): MemberInvitation!
+  updateMemberPrivateMessagingSettings(
+    input: UpdateMemberPrivateMessagingSettingsInput!
+  ): MemberPrivateMessagingSettings!
+    @deprecated(reason: "This mutation will be replaced by updateMember")
+  updateMemberSchemaField(input: UpdateCustomFieldSchemaInput!): Network!
+  updateMemberSpaceRole(
+    input: UpdateSpaceMemberRoleInput!
+    memberId: ID!
+    spaceId: ID!
+  ): Action!
+  updateModeration(id: ID!, input: UpdateModerationItemInput!): Action!
+    @deprecated(
+      reason: "This mutation will be replaced by updateModerationItem"
+    )
+  updateModerationItem(id: ID!, input: UpdateModerationItemInput!): Action!
+  updateModerationSettings(
+    input: UpdateModerationSettingsInput!
+  ): ModerationSettings!
+  updateNetwork(input: UpdateNetworkInput!): Network!
+  updateNetworkAvailableLocales(availableLocales: [String!]!): Network!
+  updateNetworkCustomCapacities(
+    additionalSeats: Int
+    customMemberCapacity: Int
+  ): Network!
+  updateNetworkDomainSubfolder(domainSubfolder: String): Network!
+  updateNetworkMediaSettings(
+    input: UpdateMediaNetworkSettingsInput!
+  ): MediaNetworkSettings!
+  updateNetworkNotificationSettings(
+    input: UpdateNotificationNetworkSettingsInput!
+  ): NotificationNetworkSettings!
+  updateNetworkStatus(input: UpdateNetworkStatusInput!): Action!
+  updateNewDomain(input: UpdateNewDomainInput!): DomainTransferStatus!
+  updatePasswordWithToken(input: UpdatePasswordWithTokenInput!): Action!
+  updatePermission(id: ID!, input: UpdatePermissionInput!): Permission!
+  updatePost(id: ID!, input: UpdatePostInput!): Post!
+  updatePostType(id: ID!, input: UpdatePostTypeInput!): PostType!
+  updatePostTypeField(id: ID!, input: UpdateCustomFieldSchemaInput!): PostType!
+  updatePrivateMessagingSettings(
+    input: UpdatePrivateMessagingSettingsInput!
+  ): PrivateMessagingSettings!
+    @deprecated(reason: "This mutation will be replaced by updateNetwork")
+
+  # Update the publisher settings for the given publisher.
+  updatePublisherSettings(
+    input: UpdatePublisherInput!
+    publisherId: String!
+  ): Action!
+  updateSpace(id: ID!, input: UpdateSpaceInput!): Space!
+  updateSpaceHighlightedTags(
+    input: UpdateHighlightedTags!
+    spaceId: ID!
+  ): Action!
+  updateSpaceMemberRole(
+    input: UpdateSpaceMemberRoleInput!
+    memberId: ID!
+    spaceId: ID!
+  ): Action!
+    @deprecated(
+      reason: "This mutation will be replaced by updateMemberSpaceRole"
+    )
+  updateSpacePostTypes(
+    input: [UpdateSpacePostTypeInput!]!
+    spaceId: ID!
+  ): [SpacePostType!]!
+
+  # Update the subscriber settings for the auth member.
+  updateSubscriberSettings(input: UpdateSubscriberInput!): Action!
+  updateSubscriptionInterval(interval: BillingPriceInterval!): Action!
+  updateSubscriptionPlan(priceId: String!): Action!
+  updateTag(id: ID!, input: UpdateTagInput!): Tag!
+  updateTemplate(id: String!, input: UpdateTemplateInput!): Template!
+  uploadMigrationFiles(
+    baseUrl: String
+    changeMemberEmails: Boolean
+    dryRun: Boolean
+    members: Upload
+    migrationId: String
+    posts: Upload
+    spaces: Upload
+  ): UploadedMigrations!
+  upsertExtraProperty(input: UpsertExtraPropertyInput!): Action!
+  upsertPageCustomResponse(
+    input: UpsertPageCustomResponse!
+    path: String!
+  ): PageDetailedCustomResponse!
+  upsertTheme(input: UpsertTheme!): NewTheme!
+  verifyMember(input: VerifyMemberInput!): AuthToken!
+}
+
+type NativeFieldsTemplates {
+  description: String
+  thumbnailId: String
+  title: String
+}
+
+input NativeFieldsTemplatesInput {
+  description: String
+  thumbnailId: String
+  title: String
+}
+
+type NavigationItem {
+  link: String
+  openInNewWindow: Boolean
+  text: String!
+  type: NavigationItemType!
+}
+
+enum NavigationItemType {
+  PRIMARY_BUTTON
+  PRIMARY_LINK
+  SECONDARY_BUTTON
+  TEXT_LINK
+}
+
+input NavigationSlateUpdatesInput {
+  footer: SlateUpdatesInput
+  footerDisabled: Boolean
+  footerFixed: Boolean
+  header: SlateUpdatesInput
+  headerDisabled: Boolean
+  headerFixed: Boolean
+  sidebar1: SlateUpdatesInput
+  sidebar1Disabled: Boolean
+  sidebar1Fixed: Boolean
+  sidebar2: SlateUpdatesInput
+  sidebar2Disabled: Boolean
+  sidebar2Fixed: Boolean
+}
+
+type NavigationSlates {
+  footer: Slate
+  footerDisabled: Boolean
+  footerFixed: Boolean
+  header: Slate!
+  headerDisabled: Boolean
+  headerFixed: Boolean
+  sidebar1: Slate!
+  sidebar1Disabled: Boolean
+  sidebar1Fixed: Boolean
+  sidebar2: Slate
+  sidebar2Disabled: Boolean
+  sidebar2Fixed: Boolean
+}
+
+type Network {
+  activeSso: ActiveSso
+  activeTheme: NewTheme
+  additionalSeatsCapacity: Int
+    @deprecated(reason: "Has been moved to usageLimits")
+  aliases: [String!]!
+  authMemberProps: NetworkAuthMemberProps
+  availableLocales: [String!]!
+  badges: [Badge!]
+  billingEmail: String @deprecated(reason: "It will be stored on Stripe.")
+
+  # Has been replaced by activeTheme, but some may still use it
+  brandColor: String
+  companyName: String @deprecated(reason: "Has been moved to extraProperties")
+  createdAt: DateTime!
+  createdBy: Member
+  createdById: ID!
+  customCodes(anonymize: Boolean!): [CustomCode!]
+  customMemberCapacity: Int @deprecated(reason: "Has been moved to usageLimits")
+  customSeoDetail: CustomSeoDetail
+  defaultSpaces: [Space!]
+  description: String
+  domain: String!
+  domainSubfolder: String
+  extraProperties(keys: [String!]): [ExtraProperty!]
+  favicon: Media
+  faviconId: ID
+  footer: Footer @deprecated(reason: "Has been replaced by navigation slates")
+  hideDefaultAuthenticationForm: Boolean!
+    @deprecated(reason: "Has been moved to extraProperties")
+  id: ID!
+  images: NetworkImages
+  incidentEmails: [String!]
+  industry: NetworkIndustryType
+    @deprecated(reason: "Has been moved to extraProperties")
+  landingPages: NetworkSettings @deprecated(reason: "This field is deprecated.")
+  limits: NetworkLimits
+  limitsUpdatedAt: DateTime
+  locale: String!
+  logo: Media
+  logoId: ID
+  mediaLimits: MediaLimits
+    @deprecated(reason: "This resolver will be replaced by limits")
+  mediaSettings: MediaNetworkSettings
+    @deprecated(reason: "This resolver will be replaced by settings")
+
+  # Calculated member capacity
+  memberCapacity: Int @deprecated(reason: "Has been moved to usageLimits")
+  memberCapacityDeclared: Int
+    @deprecated(reason: "Has been moved to usageLimits")
+  memberFields: CustomFieldsSchema
+  members(
+    after: String
+    before: String
+    limit: Int!
+    offset: Int
+    reverse: Boolean
+    status: [MemberStatusInput!]
+  ): PaginatedMember
+  membersCount: Int
+  membership: NetworkMembership!
+  name: String!
+  navigationSlates: NavigationSlates!
+  newDomain: String
+  notificationSettings: NotificationNetworkSettings
+    @deprecated(reason: "This resolver will be replaced by settings")
+  organizationId: String
+  overUsedAt: DateTime
+  owner: Member
+  ownerId: ID!
+  passwordComplexity: NetworkPasswordComplexity!
+  planName: String!
+  postTypes(context: PostTypeContext): [PostType!]
+  privacyPolicyUrl: String
+    @deprecated(reason: "Has been moved to extraProperties")
+  referralLink: String
+  referralProgramEnabled: Boolean!
+  releaseChannel: NetworkReleaseChannelType
+    @deprecated(reason: "Has been moved to extraProperties")
+  roles: [Role!]
+  seatCapacityDeclared: Int @deprecated(reason: "Has been moved to usageLimits")
+
+  # Calculated seats capacity
+  seatsCapacity: Int @deprecated(reason: "Has been moved to usageLimits")
+  settings: Settings
+  shortcuts: [Shortcut!]
+  spaces(limit: Int!): PaginatedSpace
+  status: NetworkStatus!
+  statusLocked: Boolean!
+  statusReason: StatusReason
+  subscriptionPlan: Plan @deprecated(reason: "Use planName instead.")
+  systemSpaces: [Space!]
+  termsOfServiceUrl: String
+    @deprecated(reason: "Has been moved to extraProperties")
+
+  # Has been replaced by activeTheme, but some may still use "themes"
+  themes: Themes
+  topNavigation: TopNavigation
+    @deprecated(reason: "Has been replaced by navigation slates")
+  tribeBranding: Boolean!
+  usages: NetworkUsages
+  visibility: NetworkVisibility!
+  whoCanInvite: [Role!]
+  whoCanInviteIds: [ID!]!
+  willUnpublishAt: DateTime
+}
+
+type NetworkAuthMemberProps {
+  context: PermissionContext!
+  permissions: [ActionPermissions!]
+  privateMessagingEnabled: Boolean
+    @deprecated(reason: "This field will be replaced by Member.settings")
+  scopes: [String!]
+  totalUnreadPostsCount(type: [SpaceType!]): Int
+}
+
+type NetworkImages {
+  darkFavicon: Media
+  darkLogo: Media
+  darkMobileLogo: Media
+  lightFavicon: Media
+  lightLogo: Media
+  lightMobileLogo: Media
+}
+
+input NetworkImagesInput {
+  darkFaviconId: String
+  darkLogoId: String
+  darkMobileLogoId: String
+  lightFaviconId: String
+  lightLogoId: String
+  lightMobileLogoId: String
+}
+
+enum NetworkIndustryType {
+  BloggerCoachCreator
+  ConsultingAndAgency
+  EcomerceAndRetail
+  EntertainmentAndEvents
+  FinancianServices
+  Healthcare
+  InternetAndOnlineService
+  MediaAndPublishing
+  NonProfitAndAssociation
+  OnlineTrainingAndEducation
+  Other
+  SoftwareAndSaas
+}
+
+enum NetworkLandingPage {
+  EXPLORE
+  FEED
+  SPACES
+}
+
+type NetworkLimits {
+  analyticsLimits: AnalyticsLimits!
+  fileSizeLimit: Float!
+  fileTypesLimit: [String!]!
+  imageSizeLimit: Float!
+  imageTypesLimit: [String!]!
+  usageLimits: NetworkUsageLimits!
+}
+
+enum NetworkMembership {
+  inviteOnly
+  open
+}
+
+enum NetworkPasswordComplexity {
+  Complex
+  Simple
+  Standard
+}
+
+enum NetworkPrimaryMembersType {
+  Customers
+  Employees
+  Members
+  Other
+  Students
+}
+
+type NetworkPublicInfo {
+  domain: String!
+  domainSubfolder: String
+  favicon: Media
+  faviconId: ID
+  id: ID!
+  images: NetworkImages
+  jwtSsoAuthUrls: JwtSsoAuthUrls
+  logo: Media
+  logoId: ID
+  membership: NetworkMembership!
+  name: String!
+  status: NetworkStatus!
+  systemSpaces: [Space!]
+  visibility: NetworkVisibility!
+}
+
+enum NetworkReleaseChannelType {
+  edge
+  stable
+}
+
+type NetworkSettings {
+  landingPageForGuest: NetworkLandingPage!
+  landingPageForMember: NetworkLandingPage!
+  landingPageForNewMember: NetworkLandingPage!
+}
+
+input NetworkSettingsInput {
+  captcha: CaptchaSettingsInput
+  contentTranslation: ContentTranslationSettingsInput
+  memberPermissions: MemberPermissionsSettingsInput
+  privateMessaging: PrivateMessagingSettingsInput
+}
+
+enum NetworkStatus {
+  archived
+  published
+  unpublished
+}
+
+enum NetworkStatusChangedBy {
+  admin
+  support
+  system
+}
+
+enum NetworkStatusReason {
+  memberCapacityExceeded
+  networkCreated
+  networkLockLifted
+  seatsCapacityExceeded
+  trialEnded
+}
+
+enum NetworkTimeframeType {
+  FewMonths
+  FewWeeks
+  NotSure
+  VerySoon
+}
+
+type NetworkUsageLimits {
+  aiSearchAccess: Boolean
+  analyticsAccess: Boolean
+  analyticsDaysLimit: Float
+  apiAccess: Boolean
+  apiRequestCapacity: [ApiRequestLimit!]
+  appIds: [String!]
+  auditLogAccess: Boolean
+  customDomain: Boolean
+  emailCustomization: Boolean
+  jwtSSOAccess: Boolean
+  membersCapacity: Float
+  monthlyEmailCapacity: Float
+  monthlyVisitorCapacity: Float
+  oauth2SSOAccess: Boolean
+  postTypesCapacity: Float
+  samlSSOAccess: Boolean
+  seatsCapacity: Float
+  sitemap: Boolean
+  spacesCapacity: Float
+  storageCapacity: Float
+  translationLocaleCapacity: Float
+}
+
+type NetworkUsages {
+  fileStorageUsage: Float!
+  imageStorageUsage: Float!
+  usages: NetworkUsageLimits!
+}
+
+enum NetworkVisibility {
+  private
+  public
+}
+
+type NewTheme {
+  colorTokens: ThemeColorTokens
+  colors: ThemeColors
+  id: String!
+  name: String
+  typography: [ThemeToken!]
+}
+
+type Notification {
+  # This field represents the member that triggered the event. However, for events such as 'post updated', 'post deleted', 'comment updated', 'comment deleted', or 'join request status updated', the actor field may be set to null. This is a privacy measure designed to prevent the exposure of potentially sensitive identities, such as moderators, who may be responsible for these actions.
+  actor: Payload
+  createdAt: DateTime!
+  id: ID!
+  meta: NotificationMeta
+  object: Payload
+  read: Boolean!
+  space: Space
+  summary: String
+  target: Payload
+  verb: NotificationVerb!
+}
+
+type NotificationEdge {
+  cursor: String!
+  node: Notification!
+}
+
+type NotificationMeta {
+  body: String
+  fullTitle: String!
+  reason: NotificationReason!
+  relativeUrl: String!
+  textBody: String
+  textFullTitle: String!
+  textTitle: String!
+  title: String!
+  url: String!
+}
+
+type NotificationNetworkSettings {
+  emailEnabled: Boolean!
+  emailFrom: String
+  emailNotificationEnabled: Boolean!
+}
+
+enum NotificationReason {
+  NETWORK_ADMIN
+  NETWORK_SUBSCRIPTION
+  POST_AUTHOR
+  POST_SUBSCRIPTION
+  SPACE_ADMIN
+  SPACE_SUBSCRIPTION
+}
+
+type NotificationSubscription {
+  createdAt: DateTime!
+  id: ID!
+  networkId: String!
+  publisher: Publisher
+  publisherId: String!
+  subscriberId: String!
+}
+
+type NotificationSubscriptionEdge {
+  cursor: String!
+  node: NotificationSubscription!
+}
+
+enum NotificationVerb {
+  COMMENT_CREATED
+  COMMENT_DELETED
+  COMMENT_UPDATED
+  JOIN_REQUEST_STATUS_UPDATED
+  MEMBER_MENTIONED
+  MESSAGE_CREATED
+  POST_CREATED
+  POST_DELETED
+  POST_UPDATED
+  REACTION_CREATED
+}
+
+type NotificationsCount {
+  new: Float!
+}
+
+enum NumberTypeOptions {
+  integer
+  number
+}
+
+type OAuthCode {
+  code: String!
+}
+
+input OAuthCodeInput {
+  clientId: String!
+  redirectUri: String!
+  scopes: [PrimaryScopes!]!
+}
+
+input OAuthTokenInput {
+  code: String
+  refreshToken: String
+}
+
+type OAuthTokens {
+  accessToken: String!
+  expiresIn: Float!
+  memberId: String!
+  refreshToken: String!
+}
+
+type Page {
+  customResponse: PageCustomResponse
+  entity: PageEntity
+  seoDetail: PageSeo!
+  space: Space!
+}
+
+type PageCustomResponse {
+  body: String!
+  headers: [PageCustomResponseHeader!]!
+  httpCode: Int!
+}
+
+type PageCustomResponseHeader {
+  key: String!
+  value: String!
+}
+
+input PageCustomResponseHeaderInput {
+  key: String!
+  value: String!
+}
+
+type PageDetailedCustomResponse {
+  body: String!
+  createdAt: DateTime!
+  createdById: String
+  creatorType: CreatorType!
+  headers: [PageCustomResponseHeader!]!
+  httpCode: Int!
+  updatedAt: DateTime
+  updatedById: String
+}
+
+type PageDetailedCustomResponseEdge {
+  cursor: String!
+  node: PageDetailedCustomResponse!
+}
+
+union PageEntity = Collection | Member | Post
+
+type PageInfo {
+  endCursor: String
+  hasNextPage: Boolean!
+}
+
+type PageSeo {
+  additionalMeta: [PageTag!]
+  description: String
+  jsonld: String
+  thumbnail: Media
+  title: String!
+}
+
+enum PageSeoTagType {
+  LINK
+  META
+  TITLE
+}
+
+type PageTag {
+  properties: [KeyValue!]!
+  type: PageSeoTagType!
+}
+
+type PaginatedApp {
+  edges: [AppEdge!]
+  nodes: [App!]
+  pageInfo: PageInfo!
+  totalCount: Int
+}
+
+type PaginatedAppInstallation {
+  edges: [AppInstallationEdge!]
+  nodes: [AppInstallation!]
+  pageInfo: PageInfo!
+  totalCount: Int
+}
+
+type PaginatedDynamicBlock {
+  edges: [DynamicBlockEdge!]
+  nodes: [DynamicBlock!]
+  pageInfo: PageInfo!
+  totalCount: Int
+}
+
+type PaginatedEmailLog {
+  edges: [EmailLogEdge!]
+  nodes: [EmailLog!]
+  pageInfo: PageInfo!
+  totalCount: Int
+}
+
+type PaginatedExport {
+  edges: [ExportEdge!]
+  nodes: [Export!]
+  pageInfo: PageInfo!
+  totalCount: Int
+}
+
+type PaginatedMember {
+  edges: [MemberEdge!]
+  nodes: [Member!]
+  pageInfo: PageInfo!
+  totalCount: Int
+}
+
+type PaginatedMemberInvitation {
+  edges: [MemberInvitationEdge!]
+  nodes: [MemberInvitation!]
+  pageInfo: PageInfo!
+  totalCount: Int
+}
+
+type PaginatedModeration {
+  edges: [ModerationItemEdge!]
+  nodes: [ModerationItem!]
+  pageInfo: PageInfo!
+  totalCount: Int
+}
+
+type PaginatedModerationItemReporter {
+  edges: [ModerationItemReporterEdge!]
+  nodes: [ModerationItemReporter!]
+  pageInfo: PageInfo!
+  totalCount: Int
+}
+
+type PaginatedNetwork {
+  edges: [PluralNetworkEdge!]
+  nodes: [PluralNetwork!]
+  pageInfo: PageInfo!
+  totalCount: Int
+}
+
+type PaginatedNotification {
+  edges: [NotificationEdge!]
+  nodes: [Notification!]
+  pageInfo: PageInfo!
+  totalCount: Int
+}
+
+type PaginatedNotificationSubscriptions {
+  edges: [NotificationSubscriptionEdge!]
+  nodes: [NotificationSubscription!]
+  pageInfo: PageInfo!
+  totalCount: Int
+}
+
+type PaginatedPageCustomResponse {
+  edges: [PageDetailedCustomResponseEdge!]
+  nodes: [PageDetailedCustomResponse!]
+  pageInfo: PageInfo!
+  totalCount: Int
+}
+
+type PaginatedPluralMember {
+  edges: [PluralMemberEdge!]
+  nodes: [PluralMember!]
+  pageInfo: PageInfo!
+  totalCount: Int
+}
+
+type PaginatedPost {
+  edges: [PostEdge!]
+  nodes: [Post!]
+  pageInfo: PageInfo!
+  totalCount: Int
+}
+
+type PaginatedPostReactionParticipant {
+  edges: [PostReactionParticipantEdge!]
+  nodes: [PostReactionParticipant!]
+  pageInfo: PageInfo!
+  totalCount: Int
+}
+
+type PaginatedPostType {
+  edges: [PostTypeEdge!]
+  nodes: [PostType!]
+  pageInfo: PageInfo!
+  totalCount: Int
+}
+
+type PaginatedSitemap {
+  edges: [SitemapEdge!]
+  nodes: [Sitemap!]
+  pageInfo: PageInfo!
+  totalCount: Int
+}
+
+type PaginatedSpace {
+  edges: [SpaceEdge!]
+  nodes: [Space!]
+  pageInfo: PageInfo!
+  totalCount: Int
+}
+
+type PaginatedSpaceJoinRequest {
+  edges: [SpaceJoinRequestEdge!]
+  nodes: [SpaceJoinRequest!]
+  pageInfo: PageInfo!
+  totalCount: Int
+}
+
+type PaginatedSpaceMember {
+  edges: [SpaceMemberEdge!]
+  nodes: [SpaceMember!]
+  pageInfo: PageInfo!
+  totalCount: Int
+}
+
+type PaginatedSpacePostType {
+  edges: [SpacePostTypeEdge!]
+  nodes: [SpacePostType!]
+  pageInfo: PageInfo!
+  totalCount: Int
+}
+
+type PaginatedTag {
+  edges: [TagEdge!]
+  nodes: [Tag!]
+  pageInfo: PageInfo!
+  totalCount: Int
+}
+
+type PaginatedTemplate {
+  edges: [TemplateEdge!]
+  nodes: [Template!]
+  pageInfo: PageInfo!
+  totalCount: Int
+}
+
+type PasswordComplexity {
+  complex: Boolean!
+}
+
+type PathPermissions {
+  isAuthorized: IsAuthorized!
+  path: String!
+}
+
+type Payload {
+  id: ID!
+  media: Media
+  member: Member
+  name: String
+  post: Post
+  space: Space
+  summary: String
+  type: PayloadType!
+}
+
+enum PayloadType {
+  JOIN_REQUEST_STATUS
+  MEMBER
+  NETWORK
+  POST
+  REACTION
+  SPACE
+}
+
+type Permission {
+  createdAt: DateTime!
+  description: String
+  id: ID!
+  name: String!
+  scopes: [String!]!
+}
+
+enum PermissionContext {
+  MEMBER
+  NETWORK
+  POST
+  SPACE
+}
+
+type Permissions {
+  actions: [ActionPermissions!]!
+  contextAwareActions: [ContextPermissions!]!
+}
+
+input PermissionsContextInput {
+  context: PermissionContext!
+  ids: [String!]!
+}
+
+enum PinnedInto {
+  member
+  network
+  post
+  space
+}
+
+type Plan {
+  createdAt: DateTime!
+  endDate: DateTime
+  extendable: Boolean!
+  memberCapacity: Int!
+  name: PlanName!
+  renewDate: DateTime
+  renewalType: PlanRenewalType!
+  seatCapacity: Int!
+  startDate: DateTime!
+  trial: Boolean!
+}
+
+enum PlanName {
+  Advanced
+  Basic
+  Enterprise
+  Plus
+  PlusLegacy
+  Premium
+  PremiumLegacy
+  basic
+  enterprise
+  plus
+  premium
+}
+
+enum PlanRenewalType {
+  month
+  year
+}
+
+type PluralMember {
+  activeSession: MemberSession
+  attributes: MemberAttributes!
+    @deprecated(reason: "Has been replaced by locale field")
+  authMemberProps: MemberAuthMemberProps
+  badges: [MemberBadge!]
+  banner: Media
+  bannerId: ID
+  blockedMemberIds: [String!]
+  blockedMembers: [Member!]
+  createdAt: DateTime!
+  displayName: String @deprecated(reason: "Has been replaced with name")
+  email: String
+  emailStatus: MemberEmailStatus
+  externalId: ID
+  externalUrl: String
+  extraProperties(keys: [String!]): [ExtraProperty!]
+  fields: [CustomField!]
+  flagged: Boolean!
+  id: ID!
+  lastSeen: DateTime
+  lastSeenAt: DateTime
+  locale: String!
+  name: String
+  network: Network
+  networkId: ID!
+  newEmail: String
+  overrideTeammate: Boolean
+    @deprecated(reason: "Use the teammate field instead")
+  profilePicture: Media
+  profilePictureId: ID
+  relativeUrl: String
+  role: Role
+  roleId: ID!
+  score: Int
+  sessions: [MemberSession!]
+  settings: MemberSettings
+  shortcuts: [Shortcut!]
+  spaces(exploreOnly: Boolean, limit: Int!): PaginatedSpace
+  staffReasons: [StaffReason!]
+  status: MemberStatus!
+  subscribersCount: Int
+  tagline: String
+  teammate: Boolean!
+  updatedAt: DateTime!
+  url: String
+  username: String!
+  verifiedAt: DateTime
+}
+
+type PluralMemberEdge {
+  cursor: String!
+  node: PluralMember!
+}
+
+type PluralNetwork {
+  activeSso: ActiveSso
+  activeTheme: NewTheme
+  additionalSeatsCapacity: Int
+    @deprecated(reason: "Has been moved to usageLimits")
+  aliases: [String!]!
+  authMemberProps: NetworkAuthMemberProps
+  availableLocales: [String!]!
+  badges: [Badge!]
+  billingEmail: String @deprecated(reason: "It will be stored on Stripe.")
+
+  # Has been replaced by activeTheme, but some may still use it
+  brandColor: String
+  companyName: String @deprecated(reason: "Has been moved to extraProperties")
+  createdAt: DateTime!
+  createdBy: Member
+  createdById: ID!
+  customCodes(anonymize: Boolean!): [CustomCode!]
+  customMemberCapacity: Int @deprecated(reason: "Has been moved to usageLimits")
+  customSeoDetail: CustomSeoDetail
+  defaultSpaces: [Space!]
+  description: String
+  domain: String!
+  domainSubfolder: String
+  extraProperties(keys: [String!]): [ExtraProperty!]
+  favicon: Media
+  faviconId: ID
+  footer: Footer @deprecated(reason: "Has been replaced by navigation slates")
+  globalFavicon: Media
+  globalLogo: Media
+  hideDefaultAuthenticationForm: Boolean!
+    @deprecated(reason: "Has been moved to extraProperties")
+  id: ID!
+  images: NetworkImages
+  incidentEmails: [String!]
+  industry: NetworkIndustryType
+    @deprecated(reason: "Has been moved to extraProperties")
+  landingPages: NetworkSettings @deprecated(reason: "This field is deprecated.")
+  limits: NetworkLimits
+  limitsUpdatedAt: DateTime
+  locale: String!
+  logo: Media
+  logoId: ID
+  mediaLimits: MediaLimits
+    @deprecated(reason: "This resolver will be replaced by limits")
+  mediaSettings: MediaNetworkSettings
+    @deprecated(reason: "This resolver will be replaced by settings")
+
+  # Calculated member capacity
+  memberCapacity: Int @deprecated(reason: "Has been moved to usageLimits")
+  memberCapacityDeclared: Int
+    @deprecated(reason: "Has been moved to usageLimits")
+  memberFields: CustomFieldsSchema
+  members(
+    after: String
+    before: String
+    limit: Int!
+    offset: Int
+    reverse: Boolean
+    status: [MemberStatusInput!]
+  ): PaginatedMember
+  membersCount: Int
+  membership: NetworkMembership!
+  name: String!
+  navigationSlates: NavigationSlates!
+  newDomain: String
+  notificationSettings: NotificationNetworkSettings
+    @deprecated(reason: "This resolver will be replaced by settings")
+  organizationId: String
+  overUsedAt: DateTime
+  owner: Member
+  ownerId: ID!
+  passwordComplexity: NetworkPasswordComplexity!
+  planName: String!
+  postTypes(context: PostTypeContext): [PostType!]
+  privacyPolicyUrl: String
+    @deprecated(reason: "Has been moved to extraProperties")
+  referralLink: String
+  referralProgramEnabled: Boolean!
+  releaseChannel: NetworkReleaseChannelType
+    @deprecated(reason: "Has been moved to extraProperties")
+  roles: [Role!]
+  seatCapacityDeclared: Int @deprecated(reason: "Has been moved to usageLimits")
+
+  # Calculated seats capacity
+  seatsCapacity: Int @deprecated(reason: "Has been moved to usageLimits")
+  settings: Settings
+  shortcuts: [Shortcut!]
+  spaces(limit: Int!): PaginatedSpace
+  status: NetworkStatus!
+  statusLocked: Boolean!
+  statusReason: StatusReason
+  subscriptionPlan: Plan @deprecated(reason: "Use planName instead.")
+  systemSpaces: [Space!]
+  termsOfServiceUrl: String
+    @deprecated(reason: "Has been moved to extraProperties")
+
+  # Has been replaced by activeTheme, but some may still use "themes"
+  themes: Themes
+  topNavigation: TopNavigation
+    @deprecated(reason: "Has been replaced by navigation slates")
+  tribeBranding: Boolean!
+  usages: NetworkUsages
+  visibility: NetworkVisibility!
+  whoCanInvite: [Role!]
+  whoCanInviteIds: [ID!]!
+  willUnpublishAt: DateTime
+}
+
+type PluralNetworkEdge {
+  cursor: String!
+  node: PluralNetwork!
+}
+
+type Post {
+  allowedEmojis: [String!]
+    @deprecated(reason: "Has been replaced by allowedReactions.")
+  allowedReactions: [String!]
+  attachmentIds: [ID!]!
+  attachments: [File!]
+  authMemberProps: PostAuthMemberProps
+  contentSummary(
+    format: ShortContentFormat! = Html
+    length: Int! = 200
+  ): PostContentSummary
+  createdAt: DateTime!
+  createdBy: SpaceMember
+  createdById: ID!
+  customSeoDetail: CustomSeoDetail
+  description: String
+  embedIds: [String!]!
+  embeds: [Embed!]
+  externalId: ID
+  externalUrl: String
+  fields: [CustomField!]
+  followersCount: Int @deprecated(reason: "Use \"subscribersCount\" instead")
+  forbiddenEmojis: [String!]
+    @deprecated(reason: "Has been replaced by allowedReactions.")
+  forbiddenReactions: [String!]
+  hasMoreContent: Boolean!
+  id: ID!
+  imageIds: [ID!]!
+  images: [Media!]
+  isAnonymous: Boolean!
+  isHidden: Boolean
+  language: String
+  lastActivityAt: DateTime
+  lastActivityDetail: PostLastActivityDetail
+
+  # Whether the post is locked
+  locked: Boolean!
+  mappingFields: [PostMappingField!]
+    @deprecated(
+      reason: "This field is going to be deprecated in favor of \"fields\""
+    )
+  mentionedMembers: [String!]!
+  mentions: [Member!]
+  negativeReactions: [String!]
+    @deprecated(reason: "There are no negative reactions anymore.")
+  negativeReactionsCount: Int
+    @deprecated(reason: "There are no positive reactions anymore.")
+  networkId: ID!
+  owner: SpaceMember
+  ownerId: ID!
+  pinnedInto: [PinnedInto!]!
+  pinnedReplies: [Post!]
+  positiveReactions: [String!]
+    @deprecated(reason: "There are no positive reactions anymore.")
+  positiveReactionsCount: Int
+    @deprecated(reason: "There are no positive reactions anymore.")
+  postType: PostType
+  postTypeId: ID!
+
+  # Has been replaced by allowedReactions, but some may still use it
+  primaryReactionType: ReactionType
+  publishedAt: DateTime
+  reactions: [PostReactionDetail!]
+  reactionsCount: Int!
+  relativeUrl: String
+  repliedTo: Post
+  repliedToId: ID
+  repliedToIds: [String!]
+  repliedTos: [Post!]
+  replies(
+    after: String
+    before: String
+    excludePins: Boolean
+    limit: Int!
+    offset: Int
+    orderBy: PostListOrderByEnum
+    orderByString: String
+    reverse: Boolean
+  ): PaginatedPost
+  repliesCount: Int!
+  seoDetail: PostSeoDetail!
+  shortContent(format: ShortContentFormat! = Html, length: Int): String
+  shortcuts: [Shortcut!]
+  singleChoiceReactions: [String!]
+  slug: String
+  space: Space
+  spaceId: ID!
+  status: PostStatus!
+  subscribersCount: Int
+  tagIds: [String!]
+  tags: [Tag!]
+  textContent: String
+  thumbnail: Media
+  thumbnailId: String
+  title: String
+  topRepliers: [PostTopReplier!]!
+  topicIds: [String!] @deprecated(reason: "topicIds is replaced by tagIds.")
+  totalRepliesCount: Int!
+  updatedAt: DateTime!
+  url: String
+}
+
+type PostAuthMemberProps {
+  availableReplyTypes: [PostType!]
+  canReact: Boolean
+  context: PermissionContext!
+  memberPostNotificationSettingsEnabled: Boolean
+    @deprecated(reason: "Use \"subscribed\" instead")
+  permissions: [ActionPermissions!]
+  scopes: [String!]
+  subscribed: Boolean
+}
+
+type PostContentSummary {
+  hasMoreContent: Boolean!
+  summary: String!
+}
+
+type PostEdge {
+  cursor: String!
+  node: Post!
+}
+
+enum PostFieldsEnum {
+  boolean1
+  boolean2
+  boolean3
+  boolean4
+  boolean5
+  date1
+  date2
+  date3
+  date4
+  date5
+  html1
+  html2
+  html3
+  html4
+  html5
+  html6
+  html7
+  html8
+  html9
+  html10
+  image1
+  image2
+  image3
+  image4
+  image5
+  number1
+  number2
+  number3
+  number4
+  number5
+  numberArray1
+  numberArray2
+  numberArray3
+  numberArray4
+  numberArray5
+  text1
+  text2
+  text3
+  text4
+  text5
+  text6
+  text7
+  text8
+  text9
+  text10
+  textArray1
+  textArray2
+  textArray3
+  textArray4
+  textArray5
+}
+
+type PostLastActivityDetail {
+  entity: PostLastActivityEntity
+  entityId: ID!
+  entityType: PostLastActivityEntityType!
+}
+
+union PostLastActivityEntity = Post | PostReactionParticipant
+
+enum PostLastActivityEntityType {
+  Reaction
+  Reply
+}
+
+enum PostListFilterByEnum {
+  boolean1
+  boolean2
+  boolean3
+  boolean4
+  boolean5
+  createdAt
+  date1
+  date2
+  date3
+  date4
+  date5
+  number1
+  number2
+  number3
+  number4
+  number5
+  publishedAt
+  updatedAt
+}
+
+input PostListFilterByInput {
+  key: PostListFilterByEnum
+  keyString: String
+  operator: PostListFilterByOperator
+  value: String!
+}
+
+enum PostListFilterByOperator {
+  contains
+  endsWith
+  equals
+  gt
+  gte
+  hasValue
+  in
+  lt
+  lte
+  nin
+  not
+  startsWith
+}
+
+enum PostListOrderByEnum {
+  boolean1
+  boolean2
+  boolean3
+  boolean4
+  boolean5
+  createdAt
+  date1
+  date2
+  date3
+  date4
+  date5
+  lastActivityAt
+  number1
+  number2
+  number3
+  number4
+  number5
+  publishedAt
+  reactionsCount
+  repliesCount
+  text1
+  text2
+  text3
+  text4
+  text5
+  totalRepliesCount
+  updatedAt
+}
+
+type PostMappingField {
+  key: String!
+  type: PostMappingTypeEnum!
+  value: String!
+}
+
+input PostMappingFieldInput {
+  key: String!
+  type: PostMappingTypeEnum!
+  value: String!
+}
+
+enum PostMappingTypeEnum {
+  boolean
+  date
+  html
+  image
+  number
+  numberArray
+  text
+  textArray
+}
+
+type PostReactionDetail {
+  count: Int!
+  participants(limit: Int!): PaginatedPostReactionParticipant
+  reacted: Boolean!
+  reaction: String!
+}
+
+type PostReactionParticipant {
+  participant: Member
+  reaction: PostReactionDetail
+}
+
+type PostReactionParticipantEdge {
+  cursor: String!
+  node: PostReactionParticipant!
+}
+
+type PostSeoDetail {
+  description: String
+  image: String
+  title: String!
+}
+
+enum PostStatus {
+  ARCHIVED
+  BLOCKED
+  DELETED
+  DRAFTED
+  PUBLISHED
+}
+
+type PostTopReplier {
+  member: Member
+  repliesCount: Int!
+}
+
+type PostType {
+  actions: [PostTypeAction!]
+  allowedEmojis: [String!] @deprecated(reason: "Use allowedReactions instead.")
+  allowedReactions: [String!]
+  archived: Boolean!
+  authMemberProps: PostTypeAuthMemberProps
+  context: PostTypeContext!
+  createdAt: DateTime!
+  customReactions: [CustomReaction!]
+  description: String
+  excludedNativeShortcuts: [String!]
+  forbiddenEmojis: [String!]
+    @deprecated(reason: "Use forbiddenReactions instead.")
+  forbiddenReactions: [String!]
+  icon: Media
+  iconId: String
+  id: ID!
+  languageTemplate: String
+  layout: String!
+  mappings: [PostTypeMapping!]
+    @deprecated(
+      reason: "This field is going to be deprecated in favor of \"postFields\""
+    )
+  name: String!
+  nativeFieldsTemplates: NativeFieldsTemplates
+  negativeReactions: [String!]
+    @deprecated(reason: "There are no negative reactions anymore.")
+  pluralName: String!
+  positiveReactions: [String!]
+    @deprecated(reason: "There are no positive reactions anymore.")
+  postFields: CustomFieldsSchema
+
+  # Has been replaced by allowedReactions, but some may still use it
+  primaryReactionType: ReactionType
+  recommendationsSettings: PostTypeRecommendationSettings
+  shortContentTemplate: String
+  singleChoiceReactions: [String!]
+  slate: Slate!
+  slug: String!
+  titleTemplate: String
+  updatedAt: DateTime!
+  validReplyTypes: [PostType!]
+}
+
+type PostTypeAction {
+  props: String
+  shortcutKey: String!
+}
+
+type PostTypeAuthMemberProps {
+  availableSpaces: [Space!]
+  context: PermissionContext!
+  permissions: [ActionPermissions!]
+  scopes: [String!]
+}
+
+enum PostTypeContext {
+  post
+  reply
+}
+
+type PostTypeEdge {
+  cursor: String!
+  node: PostType!
+}
+
+type PostTypeMapping {
+  default: String
+  description: String
+  field: PostFieldsEnum!
+  isMainContent: Boolean
+  isSearchable: Boolean
+  key: String!
+  required: Boolean
+  title: String
+  type: PostMappingTypeEnum!
+}
+
+type PostTypeRecommendationSettings {
+  fields: [String!]!
+  sourceSelf: Boolean
+  sourceSpaces: [String!]
+}
+
+input PostTypeRecommendationSettingsInput {
+  fields: [String!]!
+  sourceSelf: Boolean
+  sourceSpaces: [String!]
+}
+
+type Price {
+  currency: String!
+  formattedValue: String!
+  value: Float!
+}
+
+enum PrimaryScopes {
+  CreateContent
+  DeleteAuthMember
+  DeleteContent
+  DeleteMember
+  DeleteNetwork
+  FindAuthMember
+  FindContent
+  FindNetwork
+  FullAccess
+  InviteMember
+  JoinNetwork
+  UpdateAuthMember
+  UpdateBilling
+  UpdateContent
+  UpdateMember
+  UpdateModeration
+  UpdateNetwork
+  UpdateNetworkTemplate
+  UpdateReport
+  ViewAuthMember
+  ViewContent
+  ViewMember
+  ViewNetwork
+  ViewReport
+}
+
+# Input for creating a private message.
+input PrivateMessageInput {
+  memberIds: [String!]
+}
+
+type PrivateMessagingSettings {
+  membersCanTurnOffPrivateMessaging: Boolean!
+  membersCanUsePrivateMessaging: Boolean!
+  privateMessagingEnabled: Boolean!
+}
+
+input PrivateMessagingSettingsInput {
+  membersCanTurnOffPrivateMessaging: Boolean!
+  membersCanUsePrivateMessaging: Boolean!
+  privateMessagingEnabled: Boolean!
+}
+
+type Product {
+  description: String!
+  features: [String!]!
+  name: String!
+  prices: [ProductPrice!]
+  seatCapacity: Int!
+}
+
+type ProductPrice {
+  additionalSeatPrice: Price!
+  planPrice: Price!
+  renewalType: PlanRenewalType!
+}
+
+type Publisher {
+  id: ID!
+  member: Member
+  networkId: ID!
+  notifyImplicitSubscriptions: Boolean
+  post: Post
+  space: Space
+  type: PublisherType!
+}
+
+type PublisherEdge {
+  cursor: String!
+  node: Publisher!
+}
+
+enum PublisherType {
+  Custom
+  Member
+  Post
+  Space
+}
+
+input PurchaseInput {
+  billingDetails: BillingDetailsInput
+  planName: PlanName!
+  promotionCode: String
+  renewalType: PlanRenewalType!
+  seats: Int!
+}
+
+input PurgeMediasInput {
+  mediaIds: [String!]!
+}
+
+type Query {
+  accessGroup(id: ID!): AccessGroup!
+  accessGroups: [AccessGroup!]!
+  activityLogs(query: String!): [ReportRecord!]!
+  analytics(queries: [String!]!): [AnalyticsResponse!]!
+  apiRateLimitStats: [ApiRateLimitStat!]!
+  apiUsages: [DailyApiUsage!]!
+  app(clientId: String, id: ID, redirectUri: String, slug: String): App!
+  apps(
+    after: String
+    before: String
+    limit: Int!
+    offset: Int
+    reverse: Boolean
+    standing: StoreItemStanding
+    status: StoreItemStatus
+  ): PaginatedApp!
+  authMember: Member!
+  authMemberAppInstallation(appId: String!): AppInstallation!
+  authMemberAppInstallations(
+    after: String
+    before: String
+    limit: Int!
+    offset: Int
+    reverse: Boolean
+    status: AppInstallationStatus
+  ): PaginatedAppInstallation!
+  availableDynamicBlocks(
+    context: PermissionContext
+    size: DynamicBlockSize
+  ): [DynamicBlock!]!
+  baskets(input: BasketsInput!): [Basket!]!
+    @deprecated(reason: "Use new billing APIs")
+  billingDetails: BillingDetails @deprecated(reason: "Use new billing APIs")
+  billingProducts: BillingProducts!
+  cancelSubscription: Action @deprecated(reason: "Use new billing APIs")
+  checkDomainAvailability(input: DomainAvailabilityInput!): DomainAvailability!
+    @deprecated(reason: "This query will be replaced by domainAvailability")
+  checkEmailAvailability(email: String!): EmailAvailability!
+    @deprecated(reason: "This query will be replaced by emailAvailability")
+  checkInvitationLinkValidity(invitationLinkId: String!): MemberInvitationLink!
+    @deprecated(reason: "This query will be replaced by invitationLinkValidity")
+  checkMemberInvitationValidity(token: String!): MemberInvitation!
+    @deprecated(
+      reason: "This query will be replaced by memberInvitationValidity"
+    )
+  checkNewDomainStatus(domain: String!): DomainTransferStatus!
+    @deprecated(reason: "This query will be replaced by newDomainStatus")
+  checkPasswordComplexity(password: String!): PasswordComplexity!
+    @deprecated(reason: "This query will be replaced by passwordComplexity")
+  checkUsernameAvailability(username: String!): UsernameAvailability!
+    @deprecated(reason: "This query will be replaced by usernameAvailability")
+  collection(id: ID): Collection!
+  collections(
+    orderBy: CollectionListOrderByEnum
+    reverse: Boolean
+  ): [Collection!]!
+  domainAvailability(input: DomainAvailabilityInput!): DomainAvailability!
+  dynamicBlock(blockId: ID!): DynamicBlock!
+  dynamicBlockByKey(appId: ID!, key: String!): DynamicBlock!
+  dynamicBlocks(
+    after: String
+    appIds: [ID!]
+    before: String
+    contexts: [PermissionContext!]
+    limit: Int!
+    offset: Int
+    reverse: Boolean
+  ): PaginatedDynamicBlock!
+  emailAvailability(email: String!): EmailAvailability!
+  emailLogs(
+    after: String
+    limit: Int!
+    recipient: String
+    reverse: Boolean
+    statuses: [EmailStatus!]
+    types: [EmailType!]
+  ): PaginatedEmailLog!
+  embed(input: EmbedInput!): Embed!
+  exploreSpaces(
+    after: String
+    before: String
+    collectionId: String
+    limit: Int!
+    offset: Int
+    reverse: Boolean
+  ): PaginatedSpace!
+  exportMemberRequest(id: ID!): Export!
+  exportMemberRequests(
+    after: String
+    before: String
+    limit: Int!
+    offset: Int
+    orderBy: ExportListOrderByEnum
+    query: String
+    reverse: Boolean
+    statuses: [ExportStatus!]
+  ): PaginatedExport!
+  extraProperties(
+    entityId: String
+    entityType: ExtraPropertyEntityType!
+    keys: [String!]
+  ): [ExtraProperty!]!
+  feed(
+    after: String
+    before: String
+    filterBy: [PostListFilterByInput!]
+    limit: Int!
+    offset: Int
+    onlyMemberSpaces: Boolean
+    orderBy: PostListOrderByEnum
+    orderByString: String
+    postTypeIds: [String!]
+    reverse: Boolean
+  ): PaginatedPost!
+  getAppById(id: ID!): App!
+    @deprecated(reason: "This query will be replaced by app")
+  getAppBySlug(slug: String!): App!
+    @deprecated(reason: "This query will be replaced by app")
+  getAppNetworkSettings(appId: ID!): String!
+  getAppSpaceSettings(appId: ID!, spaceId: ID!): String!
+  getApps(
+    after: String
+    before: String
+    limit: Int!
+    offset: Int
+    reverse: Boolean
+    status: StoreItemStatus
+  ): PaginatedApp! @deprecated(reason: "This query will be replaced by apps")
+  getAuthMember: Member!
+    @deprecated(reason: "This query will be replaced by authMember")
+  getEmbed(input: EmbedInput!): Embed!
+    @deprecated(reason: "This query will be replaced by embed")
+  getFeed(
+    after: String
+    before: String
+    filterBy: [PostListFilterByInput!]
+    limit: Int!
+    offset: Int
+    onlyMemberSpaces: Boolean
+    orderBy: PostListOrderByEnum
+    postTypeIds: [String!]
+    reverse: Boolean
+  ): PaginatedPost! @deprecated(reason: "This query will be replaced by feed")
+  getGroup(groupId: ID): Collection!
+    @deprecated(reason: "This query will be replaced by collection")
+  getGroups: [Collection!]!
+    @deprecated(reason: "This query will be replaced by collections")
+  getMedia(mediaId: ID!): Media!
+    @deprecated(reason: "This query will be replaced by media")
+  getMember(memberId: ID, username: String): Member!
+    @deprecated(reason: "This query will be replaced by member")
+  getMemberAppInstallations(
+    after: String
+    before: String
+    limit: Int!
+    offset: Int
+    reverse: Boolean
+    status: AppInstallationStatus
+  ): PaginatedAppInstallation!
+    @deprecated(reason: "Use authMemberAppInstallations instead")
+  getMemberInvitation(id: ID!): MemberInvitation!
+    @deprecated(reason: "This query will be replaced by memberInvitation")
+  getMemberInvitationLink: MemberInvitationLink!
+    @deprecated(reason: "This query will be replaced by memberInvitationLink")
+  getMemberInvitations(
+    after: String
+    before: String
+    limit: Int!
+    offset: Int
+    query: String
+    reverse: Boolean
+    roleIds: [String!]
+    status: MemberInvitationStatus
+  ): PaginatedMemberInvitation!
+    @deprecated(reason: "This query will be replaced by memberInvitations")
+  getMemberPosts(
+    after: String
+    before: String
+    limit: Int!
+    memberId: ID!
+    offset: Int
+    reverse: Boolean
+  ): PaginatedPost!
+    @deprecated(reason: "This query will be replaced by memberPosts")
+  getMemberSpaces(
+    after: String
+    before: String
+    groupId: String
+    limit: Int!
+    memberId: ID!
+    offset: Int
+    reverse: Boolean
+    roleIds: [ID!]
+  ): PaginatedSpaceMember!
+    @deprecated(reason: "This query will be replaced by memberSpaces")
+  getMembers(
+    after: String
+    before: String
+    limit: Int!
+    offset: Int
+    query: String
+    reverse: Boolean
+    roleIds: [ID!]
+    status: [MemberStatusInput!]
+  ): PaginatedMember!
+    @deprecated(reason: "This query will be replaced by members")
+  getModerationById(moderationId: ID!): ModerationItem!
+    @deprecated(reason: "This query will be replaced by moderationItem")
+  getModerationReporters(
+    after: String
+    before: String
+    limit: Int!
+    moderationId: String!
+    offset: Int
+    reverse: Boolean
+  ): PaginatedModerationItemReporter!
+    @deprecated(
+      reason: "This query will be replaced by moderationItemReporters"
+    )
+  getModerationSetting: ModerationSettings!
+    @deprecated(reason: "This query will be replaced by moderationSettings")
+  getModerations(
+    after: String
+    before: String
+    entityId: String
+    entityType: ModerationEntityType
+    flaggedBy: FlaggedType
+    limit: Int!
+    offset: Int
+    reverse: Boolean
+    spaceId: String
+    status: ModerationStatus
+  ): PaginatedModeration!
+    @deprecated(reason: "This query will be replaced by moderationItems")
+  getNetwork: Network!
+    @deprecated(reason: "This query will be replaced by network")
+  getNetworkAppInstallations(
+    after: String
+    before: String
+    limit: Int!
+    offset: Int
+    reverse: Boolean
+    status: AppInstallationStatus
+  ): PaginatedAppInstallation!
+    @deprecated(reason: "Use networkAppInstallations instead")
+  getNetworkApps(status: AppInstallationStatus): [App!]!
+    @deprecated(reason: "This query will be replaced by networkApps")
+  getNetworkPublicInfo: NetworkPublicInfo!
+    @deprecated(reason: "This query will be replaced by networkPublicInfo")
+  getNetworks(
+    after: String
+    before: String
+    limit: Int!
+    offset: Int
+    query: String
+    reverse: Boolean
+  ): PaginatedNetwork!
+    @deprecated(reason: "This query will be replaced by networks")
+  getNotifications(
+    after: String
+    limit: Int!
+    verb: NotificationVerb
+  ): PaginatedNotification!
+    @deprecated(reason: "This query will be replaced by notifications")
+  getNotificationsCount: NotificationsCount!
+    @deprecated(reason: "This query will be replaced by notificationsCount")
+  getPost(postId: ID!): Post!
+    @deprecated(reason: "This query will be replaced by post")
+  getPostAppInstallations(
+    after: String
+    before: String
+    limit: Int!
+    offset: Int
+    postId: ID!
+    reverse: Boolean
+    status: AppInstallationStatus
+  ): PaginatedAppInstallation!
+    @deprecated(reason: "We no longer support app installation on space")
+  getPostReactionParticipants(
+    after: String
+    before: String
+    limit: Int!
+    offset: Int
+    postId: ID!
+    reaction: ID!
+    reverse: Boolean
+  ): PaginatedPostReactionParticipant!
+    @deprecated(
+      reason: "This query will be replaced by postReactionParticipants"
+    )
+  getPosts(
+    after: String
+    before: String
+    excludePins: Boolean
+    filterBy: [PostListFilterByInput!]
+    limit: Int!
+    offset: Int
+    orderBy: PostListOrderByEnum
+    postTypeIds: [String!]
+    reverse: Boolean
+    spaceIds: [ID!]
+  ): PaginatedPost! @deprecated(reason: "This query will be replaced by posts")
+  getReplies(
+    after: String
+    before: String
+    excludePins: Boolean
+    limit: Int!
+    offset: Int
+    orderBy: PostListOrderByEnum
+    postId: ID!
+    reverse: Boolean
+  ): PaginatedPost!
+    @deprecated(reason: "This query will be replaced by replies")
+  getReport(input: ReportInput!): Report!
+    @deprecated(reason: "This query is replaced by analytics")
+  getRoles: [Role!]! @deprecated(reason: "This query will be replaced by roles")
+  getScopes(contexts: [PermissionsContextInput!]): Scopes!
+    @deprecated(reason: "This query will be replaced by scopes")
+  getSpace(spaceId: ID, spaceSlug: ID): Space!
+    @deprecated(reason: "This query will be replaced by space")
+  getSpaceAppInstallations(
+    after: String
+    before: String
+    limit: Int!
+    offset: Int
+    reverse: Boolean
+    spaceId: ID!
+    status: AppInstallationStatus
+  ): PaginatedAppInstallation!
+    @deprecated(reason: "We no longer support app installation on space")
+  getSpaceMembers(
+    after: String
+    before: String
+    limit: Int!
+    offset: Int
+    reverse: Boolean
+    roleIds: [ID!]
+    spaceId: ID!
+  ): PaginatedSpaceMember!
+    @deprecated(reason: "This query will be replaced by spaceMembers")
+  getSpaceMembershipRequestForMember(
+    status: SpaceJoinRequestStatus
+  ): [SpaceJoinRequest!]!
+    @deprecated(
+      reason: "This query will be replaced by memberSpaceMembershipRequest"
+    )
+  getSpaceMembershipRequests(
+    spaceId: ID!
+    status: SpaceJoinRequestStatus
+  ): [SpaceJoinRequest!]!
+    @deprecated(
+      reason: "This query will be replaced by spaceMembershipRequests"
+    )
+  getSpacePinnedPosts(spaceId: ID!): [Post!]!
+    @deprecated(reason: "This query will be replaced by spacePinnedPosts")
+  getSpaceReport(input: ReportInput!, spaceId: String!): Report!
+    @deprecated(reason: "This query is replaced by analytics")
+  getSpaceRoles(spaceId: ID): [SpaceRole!]!
+    @deprecated(reason: "This query will be replaced by spaceRoles")
+  getSsoMemberships(memberId: String!): [SsoMembership!]!
+    @deprecated(reason: "This query will be replaced by ssoMemberships")
+  getSupportNetworkTokens(
+    input: CreateLimitedSupportTokenInput!
+  ): SupportLimitedAuthToken!
+    @deprecated(reason: "This query will be replaced by supportNetworkTokens")
+  getTokens(
+    networkDomain: String
+    networkId: ID
+    otp: String
+    refreshToken: String
+  ): AuthToken! @deprecated(reason: "This query will be replaced by tokens")
+  globalApp(id: ID, slug: String): App!
+    @deprecated(reason: "Use the global gateway instead")
+  globalAppCollaborators(appId: String!): [AppCollaborator!]!
+    @deprecated(reason: "Use the global gateway instead")
+  globalAppPublications(appId: ID!): [AppPublication!]!
+    @deprecated(reason: "Use the global gateway instead")
+  globalAppSettings(
+    context: PermissionContext!
+    entityId: ID
+    networkId: ID!
+  ): AppSetting! @deprecated(reason: "Use the global gateway instead")
+  globalApps(
+    after: String
+    before: String
+    limit: Int!
+    offset: Int
+    reverse: Boolean
+    standing: StoreItemStanding
+    status: StoreItemStatus
+  ): PaginatedApp! @deprecated(reason: "Use the global gateway instead")
+  globalEmbed(input: EmbedInput!): Embed!
+    @deprecated(reason: "Use the global gateway instead")
+  globalEventTypes: [EventType!]!
+    @deprecated(reason: "Use the global gateway instead")
+  globalMedia(id: ID!): Media!
+    @deprecated(reason: "Use the global gateway instead")
+  globalNetworks(
+    after: String
+    before: String
+    limit: Int!
+    offset: Int
+    query: String
+    reverse: Boolean
+    roleType: RoleType
+  ): PaginatedNetwork! @deprecated(reason: "Use the global gateway instead")
+  globalToken(input: GlobalTokenInput!): GlobalToken!
+    @deprecated(reason: "Use the global gateway instead")
+  homepage(type: HomeSpaceType = Default): Page
+  impersonateLoginToNetwork(
+    input: ImpersonateLoginToNetworkInput!
+  ): AuthInfoWithOtp!
+    @deprecated(
+      reason: "This query will be replaced by impersonateLoginToNetwork mutation"
+    )
+  invitationLinkValidity(id: String!): MemberInvitationLink!
+  invoices: [Invoice!]! @deprecated(reason: "Use new billing APIs")
+  leaderboard(input: ReportInput!): [Member!]!
+    @deprecated(reason: "This query is replaced by analytics")
+  leaderboardWithScores(
+    includeAuthMember: Boolean!
+    input: ReportInput!
+  ): [LeaderboardItem!]!
+    @deprecated(reason: "This query is replaced by analytics")
+  limitedToken(
+    context: PermissionContext
+    entityId: String
+    impersonateMemberId: String
+    networkId: String!
+  ): AppToken!
+  loginNetwork(input: LoginNetworkWithPasswordInput!): AuthToken!
+    @deprecated(reason: "This query will be replaced by loginNetwork mutation")
+  loginNetworkWithPassword(input: LoginNetworkWithPasswordInput!): AuthToken!
+    @deprecated(
+      reason: "This query will be replaced by loginNetworkWithPassword mutation"
+    )
+  loginSupportWithSso(input: SupportSsoUrlInput): SupportSsoUrl!
+    @deprecated(reason: "This query will be replaced by supportSsoUrl")
+  loginSupportWithSsoCode(
+    input: LoginSupportWithSsoCodeInput!
+  ): SupportAuthToken!
+  loginWithSso(input: SsoUrlInput!): SsoUrl!
+    @deprecated(reason: "This query will be replaced by ssoUrl")
+  loginWithSsoCode(input: LoginWithSsoCodeInput!): AuthToken!
+    @deprecated(
+      reason: "This query will be replaced by loginWithSsoCode mutation"
+    )
+  massActionRequest(id: String!): MassActionRequest!
+  massActionRequestInProgress: MassActionRequest!
+  media(id: ID!): Media!
+  member(externalId: String, id: ID, username: String): Member!
+  memberInvitation(id: ID!): MemberInvitation!
+  memberInvitationLink: MemberInvitationLink!
+  memberInvitationValidity(token: String!): MemberInvitation!
+  memberInvitations(
+    after: String
+    before: String
+    filterBy: [MemberInvitationFilterByInput!]
+    limit: Int!
+    offset: Int
+    query: String
+    reverse: Boolean
+    roleIds: [String!]
+    status: MemberInvitationStatus
+  ): PaginatedMemberInvitation!
+  memberPosts(
+    after: String
+    before: String
+    hasParent: Boolean
+    limit: Int!
+    memberId: ID!
+    offset: Int
+    reverse: Boolean
+  ): PaginatedPost!
+  memberScore(input: ReportInput!, spaceId: String): Report!
+    @deprecated(reason: "This query is no longer valid.")
+  memberSpaceMembershipRequest(
+    status: SpaceJoinRequestStatus
+  ): [SpaceJoinRequest!]!
+  memberSpaces(
+    after: String
+    before: String
+    collectionId: String
+    limit: Int!
+    memberId: ID!
+    offset: Int
+    reverse: Boolean
+    roleIds: [ID!]
+  ): PaginatedSpaceMember!
+  members(
+    after: String
+    before: String
+    filterBy: [MemberListFilterByInput!]
+    limit: Int!
+    offset: Int
+    orderBy: String
+    query: String
+    reverse: Boolean
+    roleIds: [ID!]
+    status: [MemberStatusInput!]
+  ): PaginatedMember!
+  membersByIds(ids: [String!]!): [Member!]!
+  migrationSampleFile(type: PermissionContext): String!
+  moderationItem(id: ID!): ModerationItem!
+  moderationItemReporters(
+    after: String
+    before: String
+    limit: Int!
+    moderationId: String!
+    offset: Int
+    reverse: Boolean
+  ): PaginatedModerationItemReporter!
+  moderationItems(
+    after: String
+    before: String
+    entityId: String
+    entityType: ModerationEntityType
+    flaggedBy: FlaggedType
+    limit: Int!
+    offset: Int
+    reportCategories: [ReportCategory!]
+    reverse: Boolean
+    spaceId: String
+    status: ModerationStatus
+  ): PaginatedModeration!
+  moderationSettings: ModerationSettings!
+  network: Network!
+  networkAppInstallations(
+    after: String
+    before: String
+    limit: Int!
+    offset: Int
+    reverse: Boolean
+    status: AppInstallationStatus
+  ): PaginatedAppInstallation!
+  networkApps(status: AppInstallationStatus): [App!]!
+  networkPublicInfo: NetworkPublicInfo!
+  networks(
+    after: String
+    before: String
+    limit: Int!
+    offset: Int
+    query: String
+    reverse: Boolean
+  ): PaginatedNetwork!
+  networksMembers(
+    after: String
+    before: String
+    limit: Int!
+    offset: Int
+    query: String
+    reverse: Boolean
+    roleType: RoleType
+    status: [MemberStatus!]
+  ): PaginatedPluralMember!
+  newDomainStatus(domain: String!): DomainTransferStatus!
+  notifications(
+    after: String
+    limit: Int!
+    verb: NotificationVerb
+  ): PaginatedNotification!
+  notificationsCount: NotificationsCount!
+  oAuthCode(input: OAuthCodeInput!): OAuthCode!
+  oAuthTokens(input: OAuthTokenInput!): OAuthTokens!
+  otp: String!
+  page(path: String!): Page!
+  pageCustomResponses(
+    after: String
+    before: String
+    creatorType: CreatorType
+    limit: Int!
+    offset: Int
+    reverse: Boolean
+  ): PaginatedPageCustomResponse!
+  passwordComplexity(password: String!): PasswordComplexity!
+  permission(id: ID!): Permission!
+  permissions: [Permission!]!
+  post(id: ID!): Post!
+  postModerationItems(
+    after: String
+    before: String
+    entityId: String
+    flaggedBy: FlaggedType
+    limit: Int!
+    offset: Int
+    reportCategories: [ReportCategory!]
+    reverse: Boolean
+    spaceId: String
+    status: ModerationStatus
+  ): PaginatedModeration!
+  postReactionParticipants(
+    after: String
+    before: String
+    limit: Int!
+    offset: Int
+    postId: ID!
+    reaction: ID!
+    reverse: Boolean
+  ): PaginatedPostReactionParticipant!
+  postType(id: ID!): PostType!
+  postTypes(
+    after: String
+    before: String
+    context: PostTypeContext
+    limit: Int!
+    offset: Int
+    query: String
+    reverse: Boolean
+  ): PaginatedPostType!
+  posts(
+    after: String
+    before: String
+    excludePins: Boolean
+    filterBy: [PostListFilterByInput!]
+    limit: Int!
+    offset: Int
+    orderBy: PostListOrderByEnum
+    orderByString: String
+    postTypeIds: [String!]
+    query: String
+    reverse: Boolean
+    spaceIds: [ID!]
+  ): PaginatedPost!
+  postsByIds(ids: [ID!]!, statuses: [ID!]): [Post!]!
+
+  # Create or get a private message space inside your community which will be visible to recipient only after first message.
+  privateMessage(input: PrivateMessageInput!): Space!
+  probeDomain(domain: String!): DomainProbeResult!
+  products: [Product!]! @deprecated(reason: "Use new billing APIs")
+
+  # Get the publisher settings for the given publisher.
+  publisherSettings(publisherId: String!): Publisher!
+  recommendMembers(
+    filters: FiltersInput
+    limit: Float!
+    negativeResourceIds: [String!]
+    positiveResourceIds: [String!]!
+  ): [Member!]!
+  recommendPosts(
+    filters: FiltersInput
+    limit: Float!
+    negativeResourceIds: [String!]
+    positiveResourceIds: [String!]!
+  ): [Post!]!
+  recommendSpaces(
+    filters: FiltersInput
+    limit: Float!
+    negativeResourceIds: [String!]
+    positiveResourceIds: [String!]!
+  ): [Space!]!
+  redirect(url: String!): Redirect!
+  replies(
+    after: String
+    before: String
+    excludePins: Boolean
+    limit: Int!
+    offset: Int
+    orderBy: PostListOrderByEnum
+    postId: ID!
+    reverse: Boolean
+  ): PaginatedPost!
+  report(input: ReportInput!, spaceId: String): Report!
+    @deprecated(reason: "This query is replaced by analytics")
+  roles(orderBy: RoleListOrderByEnum, reverse: Boolean): [Role!]!
+  scopes(contexts: [PermissionsContextInput!]): Scopes!
+  search(input: SearchInput!): SearchResult!
+  searchMembers(
+    after: String
+    filters: FiltersInput
+    limit: Float!
+    query: String!
+  ): PaginatedMember!
+  searchMembersForSpaceInvitation(
+    input: SearchMembersForSpaceInvitationInput!
+  ): [MemberForSpaceInvitation!]!
+  searchPosts(
+    after: String
+    filters: FiltersInput
+    limit: Float!
+    query: String!
+  ): PaginatedPost!
+  searchSpaces(
+    after: String
+    filters: FiltersInput
+    limit: Float!
+    query: String!
+  ): PaginatedSpace!
+
+  # Paginates over the sitemap items of the site, the items can correspond to SEO indexed posts or SEO indexed spaces
+  sitemap(
+    after: String
+    before: String
+    limit: Int!
+    offset: Int
+    reverse: Boolean
+
+    # If provided, the query returns sitemap items corresponding to the posts within the specified space, in the absence of a spacePath, the query returns sitemap items corresponding to spaces.
+    spacePath: ID
+  ): PaginatedSitemap!
+  space(id: ID, path: String, slug: ID): Space!
+  spaceJoinRequests(
+    after: String
+    before: String
+    limit: Int!
+    memberId: ID
+    offset: Int
+    reverse: Boolean
+    spaceId: ID
+    status: SpaceJoinRequestStatus
+  ): PaginatedSpaceJoinRequest!
+  spaceMember(memberId: ID!, spaceId: ID!): SpaceMember!
+  spaceMembers(
+    after: String
+    before: String
+    limit: Int!
+    offset: Int
+    orderBy: SpaceMemberListOrderByEnum
+    reverse: Boolean
+    roleIds: [ID!]
+    spaceId: ID!
+  ): PaginatedSpaceMember!
+  spaceMembershipRequests(
+    spaceId: ID!
+    status: SpaceJoinRequestStatus
+  ): [SpaceJoinRequest!]!
+  spacePinnedPosts(spaceId: ID!): [Post!]!
+  spacePostType(postTypeId: ID!, spaceId: ID!): SpacePostType!
+  spacePostTypes(
+    after: String
+    before: String
+    context: PostTypeContext
+    limit: Int!
+    offset: Int
+    reverse: Boolean
+    spaceId: ID!
+  ): PaginatedSpacePostType!
+  spaceRoles(
+    orderBy: SpaceRoleListOrderByEnum
+    reverse: Boolean
+    spaceId: ID
+  ): [SpaceRole!]!
+  spaces(
+    after: String
+    before: String
+    collectionId: String
+    exploreOnly: Boolean
+    filterBy: [EntityListFilterByInput!]
+    limit: Int!
+    memberId: ID
+    offset: Int
+    orderBy: SpaceListOrderByEnum
+    orderByString: String
+    query: String
+    reverse: Boolean
+    type: [SpaceType!]
+  ): PaginatedSpace!
+  spacesByIds(ids: [ID!]!): [Space!]!
+  spacesBySlugs(slugs: [String!]!): [Space!]!
+  ssoMemberships(memberId: String!): [SsoMembership!]!
+  ssoUrl(input: SsoUrlInput!): SsoUrl!
+  ssos(status: SsoStatus): [Sso!]!
+
+  # Get the subscriber settings for the auth member.
+  subscriberSettings: Subscriber!
+  subscription(input: subscriptionInput!): BillingSubscription
+    @deprecated(reason: "Use new billing APIs")
+  subscriptionInformation: SubscriptionInformation!
+
+  # Get the subscriptions for the auth member.
+  subscriptions(
+    after: String
+    before: String
+    limit: Int!
+    offset: Int
+    publisherType: PublisherType
+    reverse: Boolean
+  ): PaginatedNotificationSubscriptions!
+  supportNetworkTokens(networkId: String!): SupportLimitedAuthToken!
+  supportSsoUrl(input: SupportSsoUrlInput): SupportSsoUrl!
+  systemSpaces: [Space!]!
+  tagPosts(
+    after: String
+    before: String
+    limit: Int!
+    offset: Int
+    reverse: Boolean
+    spaceId: ID
+
+    # Required if tagSlug is not provided. Takes precedence over tagSlug.
+    tagId: ID
+
+    # Required if tagId is not provided. Will be ignored if tagId is present.
+    tagSlug: String
+  ): PaginatedPost!
+  tags(
+    after: String
+    before: String
+    ids: [ID!]
+    limit: Int!
+    offset: Int
+    orderBy: TagsOrderByEnum
+    query: String
+    reverse: Boolean
+
+    # Only return tags that can be used in the specified space
+    spaceId: ID
+  ): PaginatedTag!
+  template(id: String!): Template!
+  templateRequest(id: String!): TemplateRequest!
+  templates(
+    after: String
+    before: String
+    categories: [String!]
+    entityTypes: [TemplateEntityType!]
+    limit: Int!
+    offset: Int
+    query: String
+    reverse: Boolean
+    status: StoreItemStatus
+  ): PaginatedTemplate!
+  tokens(
+    networkDomain: String
+    networkId: ID
+    otp: String
+    refreshToken: String
+    ssoToken: String
+  ): AuthToken!
+  translateMarkup(
+    format: TranslationMarkupFormat
+    input: [TranslationMarkupInput!]
+    markups: [String!]
+  ): [String!]!
+  usernameAvailability(username: String!): UsernameAvailability!
+  vatTypes: [VatTypeInfo!]! @deprecated(reason: "Use new billing APIs")
+}
+
+input RangeInput {
+  gt: String
+  gte: String
+  lt: String
+  lte: String
+}
+
+input ReOrderSchemaFieldInput {
+  index: Int!
+  key: String!
+}
+
+enum ReactionType {
+  EMOJI_BASE
+  LIKE_BASE
+  VOTE_BASE
+}
+
+type Redirect {
+  resolvedUrl: String!
+  url: String!
+}
+
+enum RelationTypeOptions {
+  Media
+  Member
+  Post
+  Space
+  Tag
+}
+
+input ReorderBadgeInput {
+  # The id of the badge that will be directly before the moved badge. If not provided, the badge will be moved to the beginning of the list
+  previousBadgeId: String
+}
+
+input ReorderBadgesInput {
+  # The new order of the badges in the network. This must contain all active badges in the network
+  badgeOrderIds: [String!]!
+}
+
+type Report {
+  data: [ReportData!]
+  description: String
+  endDate: DateTime
+  previousValue: String
+  slug: String!
+  startDate: DateTime
+  title: String!
+  tooltip: String
+  value: String
+}
+
+enum ReportCategory {
+  HARASSMENT
+  MISINFORMATION
+  NUDITY
+  SPAM
+  SUICIDE
+  TERRORISM
+  VIOLENCE
+}
+
+type ReportData {
+  description: String
+  key: String!
+  previousValue: ReportDataValue
+  type: ReportDataType!
+  value: ReportDataValue!
+}
+
+enum ReportDataType {
+  chartData
+  entityReport
+  intValue
+  stringValue
+}
+
+union ReportDataValue = ChartData | EntityReport | IntValue | StringValue
+
+type ReportEntities {
+  actor: Member
+  app: App
+  member: Member
+  network: Network
+  person: Member
+  post: Post
+  space: Space
+  tag: Tag
+}
+
+input ReportInput {
+  endDate: String
+  limit: Int
+  slug: ReportSlug!
+  sort: ColumnSortInput
+  startDate: String
+  timeFrame: ReportTimeFrame
+  timeZone: String!
+}
+
+type ReportPayload {
+  key: String!
+  value: String!
+}
+
+type ReportRecord {
+  entities: ReportEntities!
+  payload: [ReportPayload!]!
+}
+
+enum ReportSlug {
+  activeMembers
+  averageDailyActiveMembers
+  highlights
+  memberScore
+  newMembersOverTime
+  newPosts
+  newReactions
+  newReplies
+  popularDaysOfWeek
+  popularHoursOfDay
+  postsVSreplies
+  topMembers
+  topPosts
+  topSpaces
+  totalMembers
+  totalPosts
+  totalReactions
+  totalReplies
+  totalVisitors
+  trendingTags
+}
+
+enum ReportTimeFrame {
+  allTime
+  lastCalendarQuarter
+  lastCalendarYear
+  lastMonth
+  lastNinetyDays
+  lastSevenDays
+  lastThirtyDays
+  lastTwelveMonth
+  lastWeek
+  today
+  yesterday
+}
+
+union ReportableEntity = Member | Post | Space | Tag
+
+enum ReportableEntityType {
+  member
+  post
+  space
+}
+
+input RequestGlobalTokenInput {
+  captchaToken: String
+  email: String!
+}
+
+input ResetPasswordInput {
+  email: String!
+}
+
+enum RichTextTypeOptions {
+  html
+  markup
+}
+
+type Role {
+  description: String
+  id: ID!
+  name: String!
+  scopes: [String!]!
+  type: RoleType
+  visible: Boolean!
+}
+
+enum RoleListOrderByEnum {
+  CREATED_AT
+  UPDATED_AT
+}
+
+enum RoleType {
+  admin
+  guest
+  member
+  moderator
+}
+
+type Scopes {
+  contextAwareScopes: [ContextScopes!]!
+  scopes: [String!]!
+}
+
+type SearchEntity {
+  by: By
+  content: String
+  created: DateTime
+  entity: SearchObjectEntity
+  entityId: String
+  entityType: SearchEntityType!
+  id: ID!
+  in: In
+  media: Media
+  subtitle: String
+  tags: [String!]
+  title: String!
+  url: String
+}
+
+type SearchEntityGroup {
+  entityType: SearchEntityType!
+  hits: [SearchEntity!]!
+}
+
+enum SearchEntityType {
+  External
+  member
+  post
+  space
+}
+
+input SearchInput {
+  filters: [DeprecatedFiltersInput!]
+  includeExternal: Boolean = false
+  query: String!
+}
+
+input SearchMembersForSpaceInvitationInput {
+  query: String!
+  spaceId: ID!
+}
+
+union SearchObjectEntity = Member | Post | Space
+
+type SearchResult {
+  hits: [SearchEntityGroup!]!
+  totalCount: Float!
+}
+
+type Settings {
+  captcha: CaptchaSettings
+  contentTranslation: ContentTranslationSettings
+  emailEnabled: Boolean!
+  emailFrom: String
+  emailNotificationEnabled: Boolean!
+  fileSizeLimit: Float!
+  fileTypesLimit: [String!]!
+  imageSizeLimit: Float!
+  imageTypesLimit: [String!]!
+  memberPermissions: MembersPermissionSettings
+  membersCanTurnOffPrivateMessaging: Boolean
+    @deprecated(
+      reason: "This field will be replaced by privateMessaging.membersCanTurnOffPrivateMessaging"
+    )
+  membersCanUsePrivateMessaging: Boolean
+    @deprecated(
+      reason: "This field will be replaced by privateMessaging.membersCanUsePrivateMessaging"
+    )
+  privateMessaging: PrivateMessagingSettings
+  privateMessagingEnabled: Boolean
+    @deprecated(
+      reason: "This field will be replaced by privateMessaging.privateMessagingEnabled"
+    )
+}
+
+enum ShortContentFormat {
+  Html
+  Text
+}
+
+type Shortcut {
+  app: App
+  appId: ID!
+  description: String
+  favicon: Media
+  faviconId: ID
+  key: String!
+  name: String!
+}
+
+type SignedUrl {
+  fields: String!
+  mediaDownloadUrl: String!
+  mediaId: ID!
+  mediaUrl: String!
+  signedUrl: String!
+  urls: MediaUrls
+}
+
+type Sitemap {
+  # The id of the sitemap item
+  id: ID!
+  lastModifiedAt: DateTime!
+  url: String!
+}
+
+type SitemapEdge {
+  cursor: String!
+  node: Sitemap!
+}
+
+type Slate {
+  blocks: [Block!]!
+  id: String
+  restrictions: SlateRestrictions
+  rootBlock: String!
+}
+
+input SlateInput {
+  blocks: [BlockInput!]!
+  rootBlock: String!
+}
+
+type SlateRestrictions {
+  lockedChildrenBlocks: [String!]
+  nonEditableBlocks: [String!]
+  nonRemovableBlocks: [String!]
+}
+
+input SlateUpdatesInput {
+  addedBlocks: [BlockInput!]
+  removedBlocks: [String!]
+  rootBlock: String
+  updatedBlocks: [UpdateBlockInput!]
+}
+
+enum SortOrder {
+  ASC
+  DESC
+}
+
+type Space {
+  address: SpaceAddress!
+  authMemberProps: SpaceAuthMemberProps
+  banner: Media
+  bannerId: ID
+  collection: Collection
+  createdAt: DateTime!
+  createdBy: Member
+  createdById: ID!
+  customOrderingIndexInGroup: Float!
+  customSeoDetail: CustomSeoDetail
+  description: String
+  externalId: ID
+  externalUrl: String
+  groupId: ID
+  hidden: Boolean
+  highlightedTagIds: [ID!]!
+  highlightedTags: [Tag!]
+  id: ID!
+  image: Media
+  imageId: ID
+  installedApps(
+    after: String
+    before: String
+    limit: Int!
+    offset: Int
+    reverse: Boolean
+    status: AppInstallationStatus
+  ): PaginatedAppInstallation
+    @deprecated(reason: "We no longer support app installation on space")
+  inviteOnly: Boolean
+  isHomepage: Boolean
+  isNewUserHomepage: Boolean
+  isReturningUserHomepage: Boolean
+  key: String!
+  layout: String!
+  members(limit: Int!): PaginatedSpaceMember
+  membersCount: Int!
+  name: String!
+  network: Network
+  networkId: ID!
+  nonAdminsCanInvite: Boolean
+  pinnedPosts: [Post!]
+  posts(excludePins: Boolean, limit: Int!): PaginatedPost
+  postsCount: Int
+  private: Boolean
+  relativeUrl: String
+  roles: [SpaceRole!]
+  seoDetail: SpaceSeoDetail
+  shortcuts: [Shortcut!]
+  slate: Slate
+  slug: String!
+  subscribersCount: Int
+  tagFilter: TagFilter
+    @deprecated(
+      reason: "Space tag filters is a retired concept and is no longer used."
+    )
+  tags(
+    after: String
+    before: String
+    limit: Int!
+    offset: Int
+    orderBy: TagListOrderByEnum
+    query: String
+    reverse: Boolean
+  ): PaginatedTag
+    @deprecated(reason: "This field is deprecated. Use `tags` query instead.")
+  type: SpaceType!
+  updatedAt: DateTime!
+  url: String
+  whoCanPost: [ID!]
+  whoCanReact: [ID!]
+  whoCanReply: [ID!]
+}
+
+type SpaceAddress {
+  editable: Boolean!
+  exact: Boolean!
+  path: String!
+}
+
+input SpaceAddressInput {
+  editable: Boolean
+  exact: Boolean!
+  path: String!
+}
+
+type SpaceAuthMemberProps {
+  availablePostTypes: [PostType!]
+  context: PermissionContext!
+  lastReadAt: DateTime
+  membershipStatus: SpaceMembershipStatus
+  permissions: [ActionPermissions!]
+  scopes: [String!]
+  spaceMember: SpaceMember
+  subscribed: Boolean
+  unreadPostsCount: Int
+}
+
+type SpaceEdge {
+  cursor: String!
+  node: Space!
+}
+
+type SpaceJoinRequest {
+  id: ID!
+  member: Member
+  spaceId: ID!
+  status: SpaceJoinRequestStatus!
+}
+
+type SpaceJoinRequestEdge {
+  cursor: String!
+  node: SpaceJoinRequest!
+}
+
+enum SpaceJoinRequestStatus {
+  COMPLETED
+  DECLINED
+  PENDING
+}
+
+enum SpaceListOrderByEnum {
+  CREATED_AT
+  CUSTOM_ORDERING_INDEX
+  UPDATED_AT
+}
+
+type SpaceMember {
+  member: Member
+  role: SpaceRole
+  space: Space
+}
+
+enum SpaceMemberAffiliation {
+  Joined
+  NotJoined
+  RequestedToJoin
+  UnableToJoin
+}
+
+type SpaceMemberEdge {
+  cursor: String!
+  node: SpaceMember!
+}
+
+enum SpaceMemberListOrderByEnum {
+  CREATED_AT
+  UPDATED_AT
+}
+
+enum SpaceMembershipStatus {
+  Archived
+  Closed
+  joined
+  notJoined
+  requested
+}
+
+type SpacePostType {
+  postType: PostType
+  postTypeId: ID!
+  space: Space
+  spaceId: ID!
+  whoCanPost: [ID!]
+  whoCanReact: [ID!]
+  whoCanReply: [ID!]
+}
+
+type SpacePostTypeEdge {
+  cursor: String!
+  node: SpacePostType!
+}
+
+type SpaceRole {
+  description: String
+  id: ID!
+  name: String!
+  network: Network
+  scopes: [String!]!
+  type: SpaceRoleType
+}
+
+enum SpaceRoleListOrderByEnum {
+  CREATED_AT
+  UPDATED_AT
+}
+
+enum SpaceRoleType {
+  admin
+  member
+}
+
+type SpaceSeoDetail {
+  description: String
+  image: Media
+  title: String!
+}
+
+input SpaceSeoDetailInput {
+  description: String
+  imageId: String
+  title: String!
+}
+
+enum SpaceType {
+  Broadcast
+  Entity
+  Group
+  Page
+  PrivateMessage
+}
+
+type Sso {
+  allowSignUp: Boolean
+  authorizationUrl: String
+  buttonText: String
+  clientId: String
+  clientSecret: String
+  defaultRelayState: String
+  idpUrl: String
+  logoutUrl: String
+  name: String
+  provider: SsoProvider
+  scopes: [String!]
+  settingsUrl: String
+  signUpUrl: String
+  status: SsoStatus!
+  tokenUrl: String
+  type: SsoType!
+  userProfileUrl: String
+}
+
+type SsoMembership {
+  id: String!
+  memberId: String!
+  ssoType: SsoType!
+}
+
+enum SsoProvider {
+  auth0
+  custom
+  memberful
+  okta
+  outseta
+  wordpress
+}
+
+enum SsoStatus {
+  disable
+  enable
+}
+
+enum SsoType {
+  Apple
+  Discord
+  Saml
+  Slack
+  facebook
+  google
+  jwt
+  linkedin
+  oauth2
+}
+
+type SsoUrl {
+  url: String!
+}
+
+input SsoUrlInput {
+  callbackUrl: String
+  invitationLinkId: String
+  invitationToken: String
+  redirectUri: String
+  type: SsoType!
+}
+
+enum StaffReason {
+  NetworkStaffRole
+  SamlSso
+  SpaceStaffRole
+}
+
+type StatusReason {
+  changedAt: DateTime!
+  changedBy: NetworkStatusChangedBy!
+  changedById: String
+  reason: NetworkStatusReason
+}
+
+enum StoreItemStanding {
+  OFFICIAL
+  REGULAR
+  VERIFIED
+}
+
+enum StoreItemStatus {
+  DELETED
+  PRIVATE
+  PUBLIC
+}
+
+type StringValue {
+  string: String!
+}
+
+type Subscriber {
+  emailSubscriptionEnabled: Boolean!
+  fcmDeviceTokens: [String!]!
+  id: ID!
+  mentionEmailEnabled: Boolean!
+  mentionSubscriptionEnabled: Boolean!
+  messageEmailEnabled: Boolean!
+  networkId: String!
+  reactionEmailEnabled: Boolean!
+  reactionSubscriptionEnabled: Boolean!
+}
+
+type SubscriberEdge {
+  cursor: String!
+  node: Subscriber!
+}
+
+type Subscription {
+  ask(question: String!): String!
+  network: Network!
+  post: Post!
+  space: Space!
+}
+
+type SubscriptionCheckoutSession {
+  url: String!
+}
+
+type SubscriptionInformation {
+  addons: [AddonInformation!]
+  currentProduct: BillingProduct
+  isManual: Boolean!
+  planId: String
+  planName: String
+  planPriceId: String
+  planPriceInterval: BillingPriceInterval
+}
+
+enum SubscriptionStatus {
+  active
+  canceled
+  failed
+  incomplete
+  incomplete_expired
+  past_due
+  trialing
+  unpaid
+}
+
+type SupportAuthToken {
+  accessToken: String!
+  refreshToken: String!
+}
+
+type SupportLimitedAuthToken {
+  accessToken: String!
+  member: Member!
+}
+
+type SupportSsoUrl {
+  url: String!
+}
+
+input SupportSsoUrlInput {
+  callbackUrl: String
+}
+
+type Tag {
+  description: String
+  id: ID!
+  slug: String!
+  spaceId: String
+    @deprecated(
+      reason: "Tags are network-level objects. spaceId is no longer required to identify them."
+    )
+  title: String!
+}
+
+type TagEdge {
+  cursor: String!
+  node: Tag!
+}
+
+type TagFilter {
+  filterType: TagFilterType!
+  filters: [String!]!
+}
+
+enum TagFilterType {
+  BLACKLIST
+  WHITELIST
+}
+
+enum TagListOrderByEnum {
+  CREATED_AT
+  ID
+  UPDATED_AT
+}
+
+enum TagsOrderByEnum {
+  CREATED_AT
+  ID
+  UPDATED_AT
+}
+
+type Template {
+  about: String
+  appIds: [String!]!
+  apps: [App!]
+  authorName: String
+  authorUrl: String
+  banner: Media
+  bannerId: ID
+  categories: [String!]!
+  comingSoon: Boolean!
+  contentTypes: [ContentTypeTemplate!]
+  createdAt: DateTime!
+  createdBy: Member
+  createdById: ID
+  description: String
+  embedIds: [ID!]!
+  embeds: [Embed!]
+  entity: TemplateEntity
+  entityId: String
+  entityProperties: String!
+  entityType: TemplateEntityType!
+  favicon: Media
+  faviconId: ID
+  hubContent: HubContent
+  hubContentId: String
+  id: ID!
+  image: Media
+  imageId: ID
+  imageIds: [ID!]!
+  images: [Media!]
+  installed: Boolean
+  name: String!
+  network: Network
+  networkId: ID!
+  previewHtml: String
+  privacyPolicyUrl: String
+  requiredPlan: PlanName
+  requiredTemplateIds: [String!]!
+  requiredTemplates: [Template!] @deprecated(reason: "Use contentTypes instead")
+  slate: Slate
+  slug: String!
+  standing: StoreItemStanding!
+  status: StoreItemStatus!
+  syncedAt: DateTime
+  termsOfServiceUrl: String
+  updatedAt: DateTime!
+  updatedBy: Member
+  updatedById: ID
+}
+
+union TemplateCreatedEntity = Space
+
+type TemplateEdge {
+  cursor: String!
+  node: Template!
+}
+
+union TemplateEntity = Network | Post | PostType | Space | SpacePostType | Tag
+
+enum TemplateEntityType {
+  Collection
+  Network
+  Post
+  PostType
+  Space
+  SpacePostType
+  Tag
+}
+
+type TemplateFieldMapping {
+  from: String!
+  to: String!
+}
+
+input TemplateFieldMappingInput {
+  from: String!
+  to: String!
+}
+
+type TemplateRequest {
+  createdAt: DateTime!
+  createdById: String!
+  createdEntity: TemplateCreatedEntity
+  createdEntityAt: DateTime
+  createdEntityId: String
+  createdEntityType: TemplateEntityType!
+  id: String!
+  networkId: String
+  processedPercentage: Float!
+  status: TemplateRequestStatus!
+  templateId: String!
+  updatedAt: DateTime!
+}
+
+enum TemplateRequestStatus {
+  Failed
+  InProgress
+  Succeeded
+}
+
+type TemplatesMapping {
+  fields: [TemplateFieldMapping!]
+  from: String
+  to: String
+}
+
+input TemplatesMappingInput {
+  fields: [TemplateFieldMappingInput!]
+  from: String!
+  to: String!
+}
+
+input TestAppWebhookInput {
+  webhookUrl: String!
+}
+
+enum TextTypeOptions {
+  fullText
+  shortText
+}
+
+type Theme {
+  name: String!
+  status: ThemeStatus!
+  tokens: ThemeTokens!
+}
+
+type ThemeColor {
+  key: String!
+  weights: [ThemeToken!]!
+}
+
+type ThemeColorToken {
+  key: String!
+  value: String!
+}
+
+type ThemeColorTokens {
+  dark: [ThemeColorToken!]
+  light: [ThemeColorToken!]
+}
+
+type ThemeColors {
+  dark: [ThemeColor!]
+  light: [ThemeColor!]
+}
+
+enum ThemeStatus {
+  draft
+  published
+}
+
+type ThemeToken {
+  key: String!
+  value: String!
+}
+
+type ThemeTokens {
+  breakpoints: [ThemeToken!]
+  colors: [ThemeToken!]
+  fontSizes: [ThemeToken!]
+  fontWeights: [ThemeToken!]
+  opacity: [ThemeToken!]
+  shadows: [ThemeToken!]
+  sizes: [ThemeToken!]
+  textStyles: [ThemeToken!]
+  zIndices: [ThemeToken!]
+}
+
+type Themes {
+  active: Theme!
+  drafts: [Theme!]
+  published: [Theme!]!
+}
+
+type Toast {
+  description: String
+  duration: Float
+  status: ToastStatus
+  title: String
+}
+
+enum ToastStatus {
+  Error
+  Info
+  Neutral
+  Success
+  Warning
+}
+
+type TopNavigation {
+  alignment: TopNavigationAlignment!
+  enabled: Boolean!
+  items: [NavigationItem!]!
+}
+
+enum TopNavigationAlignment {
+  CENTER
+  LEFT
+  RIGHT
+}
+
+enum TranslationMarkupFormat {
+  HTML
+  TEXT
+}
+
+input TranslationMarkupInput {
+  format: TranslationMarkupFormat!
+  markup: String!
+}
+
+enum UnauthorizedReason {
+  ACCESS
+  PLAN
+}
+
+enum UnsubscribeTokenContext {
+  ALL
+  MEMBER
+  MENTIONS
+  POST
+  REACTIONS
+  SPACE
+}
+
+input UnsubscribeWithTokenInput {
+  context: UnsubscribeTokenContext!
+  entityId: String
+  token: String!
+}
+
+input UpdateAccessGroupInput {
+  description: String
+  entityId: ID
+  entityType: AccessGroupEntityType
+  info: String
+  name: String
+  type: String
+}
+
+input UpdateAppCustomCodes {
+  body: String
+  head: String
+}
+
+input UpdateAppInput {
+  about: String
+  authorName: String
+  authorUrl: String
+  bannerId: String
+  comingSoon: Boolean
+  customCodes: UpdateAppCustomCodes
+  description: String
+  docsUrl: String
+  faviconId: String
+  imageId: String
+  name: String
+  privacyPolicyUrl: String
+  requiredPermissions: [PrimaryScopes!]
+  requiredPlan: PlanName
+  slug: String
+  termsOfServiceUrl: String
+  webhookSubscriptions: [String!]
+  webhookUrl: String
+}
+
+input UpdateAppInstallationInput {
+  permissions: [PrimaryScopes!]
+  templatesMappings: AppInstallationTemplatesMappingsInput
+}
+
+input UpdateBadgeInput {
+  active: Boolean!
+  backgroundColor: String
+  daysUntilExpired: Float
+  imageId: ID
+  longDescription: String
+  name: String
+  settings: [BadgeSettingsInput!]
+  shortDescription: String!
+  text: String
+  textColor: String
+}
+
+input UpdateBlockInput {
+  children: String
+  extraProps: String
+  id: String!
+  output: String
+  props: String
+}
+
+input UpdateCollectionInput {
+  createdAt: DateTime
+  description: String
+  name: String
+  updatedAt: DateTime
+}
+
+input UpdateCustomFieldSchemaInput {
+  default: String
+  description: String
+  externalKeys: [String!]
+  items: BaseCustomFieldSchemaInput
+  key: String!
+  name: String
+  properties: [BaseCustomFieldSchemaInput!]
+  readPrivacy: CustomFieldPrivacyInput
+  required: Boolean
+  settings: [CustomFieldSettingsInput!]
+  validators: [CustomFieldValidatorInput!]
+  writePrivacy: CustomFieldPrivacyInput
+}
+
+input UpdateCustomSsoInput {
+  allowSignUp: Boolean
+  authorizationUrl: String
+  buttonText: String
+  clientId: String
+  clientSecret: String
+  idpUrl: String
+  logoutUrl: String
+  name: String
+  provider: SsoProvider
+  scopes: [String!]
+  settingsUrl: String
+  status: SsoStatus
+  tokenUrl: String
+  type: CustomSsoType!
+  userProfileUrl: String
+}
+
+input UpdateFileInput {
+  name: String
+}
+
+input UpdateFooter {
+  urls: [UpdateFooterUrl!]!
+}
+
+input UpdateFooterUrl {
+  title: String!
+  url: String!
+}
+
+input UpdateHighlightedTags {
+  highlightedTags: [CreateHighlightedTag!]!
+}
+
+input UpdateImageInput {
+  cropHeight: Int
+  cropWidth: Int
+  cropX: Int
+  cropY: Int
+  cropZoom: Float
+  name: String
+}
+
+input UpdateJwtSsoInput {
+  authorizationUrl: String
+  buttonText: String
+  logoutUrl: String
+  settingsUrl: String
+  signUpUrl: String
+  status: SsoStatus!
+}
+
+input UpdateMediaNetworkSettingsInput {
+  fileSizeLimit: Float
+  fileTypesLimit: [String!]
+  imageSizeLimit: Float
+  imageTypesLimit: [String!]
+}
+
+input UpdateMemberAttributesInput {
+  locale: String
+}
+
+input UpdateMemberInput {
+  attributes: UpdateMemberAttributesInput
+  bannerId: String
+  createdAt: DateTime
+  currentPassword: String
+  displayName: String
+  email: String
+  externalId: String
+  externalUrl: String
+  fields: [CustomFieldInput!]
+  flagged: Boolean
+  locale: String
+  name: String
+  newPassword: String
+  profilePictureId: String
+  roleId: ID
+  settings: MemberSettingsInput
+  tagline: String
+  updatedAt: DateTime
+  username: String
+}
+
+input UpdateMemberInvitationInput {
+  roleId: ID!
+}
+
+input UpdateMemberPrivateMessagingSettingsInput {
+  privateMessagingEnabled: Boolean
+}
+
+input UpdateModerationItemInput {
+  changeStatusReason: String
+
+  # Operation mode when accepting a moderation report. Effects vary based on reported entity type (e.g. post removal, member suspension, etc.).
+  opMode: ModerationOpMode = Purge
+  sendNotification: Boolean
+  status: ModerationStatus!
+}
+
+input UpdateModerationSettingsInput {
+  akismet: Boolean
+  blackListPostTypeIds: [String!]
+  blackListSpaceIds: [String!]
+  customBlacklist: [String!]
+  enableBlacklisting: Boolean
+  member: ModerationMemberSettingsInput
+  oopSpam: Boolean
+  preventPublish: Boolean
+  useDefaultBlacklisting: Boolean
+}
+
+input UpdateNavigationItem {
+  link: String
+  openInNewWindow: Boolean
+  text: String!
+  type: NavigationItemType!
+}
+
+input UpdateNetworkInput {
+  aliases: [String!]
+  billingEmail: String
+  brandColor: String
+  companyName: String
+  customSeoDetail: CustomSeoDetailInput
+  defaultSpaceIds: [ID!]
+  description: String
+  domain: String
+  entrancePage: String
+  faviconId: String
+  footer: UpdateFooter
+  gclid: String
+  hideDefaultAuthenticationForm: Boolean
+  imageIds: NetworkImagesInput
+  incidentEmails: [String!]
+  industry: NetworkIndustryType
+  landingPages: UpdateNetworkSettingsInput
+  locale: String
+  logoId: String
+  membership: NetworkMembership
+  name: String
+  navigationSlates: NavigationSlateUpdatesInput
+  newDomain: String
+  passwordComplexity: NetworkPasswordComplexity
+  primaryMembers: NetworkPrimaryMembersType
+  privacyPolicyUrl: String
+  referralLink: String
+  referralProgramEnabled: Boolean
+  referrer: String
+  releaseChannel: NetworkReleaseChannelType
+  settings: NetworkSettingsInput
+  termsOfServiceUrl: String
+  themes: UpdateThemes
+  timeframe: NetworkTimeframeType
+  topNavigation: UpdateTopNavigation
+  tribeBranding: Boolean
+  utmCampaign: String
+  utmContent: String
+  utmMedium: String
+  utmSource: String
+  utmTerm: String
+  visibility: NetworkVisibility
+  whoCanInviteIds: [String!]
+}
+
+input UpdateNetworkSettingsInput {
+  landingPageForGuest: NetworkLandingPage
+  landingPageForMember: NetworkLandingPage
+  landingPageForNewMember: NetworkLandingPage
+}
+
+input UpdateNetworkStatusInput {
+  status: NetworkStatus!
+  statusLocked: Boolean
+}
+
+input UpdateNewDomainInput {
+  domain: String!
+}
+
+input UpdateNotificationNetworkSettingsInput {
+  emailEnabled: Boolean
+  emailFrom: String
+  emailNotificationEnabled: Boolean
+}
+
+input UpdatePasswordWithTokenInput {
+  newPassword: String!
+  token: String!
+}
+
+input UpdatePermissionInput {
+  description: String
+  name: String
+  scopes: [String!]
+}
+
+input UpdatePostInput {
+  attachmentIds: [String!]
+  createdAt: DateTime
+
+  # The custom seo detail of this post
+  customSeoDetail: CustomSeoDetailInput
+  externalId: String
+  externalUrl: String
+
+  # Whether the post is locked
+  locked: Boolean
+  mappingFields: [PostMappingFieldInput!]
+  ownerId: ID
+  publish: Boolean! = true
+  publishedAt: DateTime
+  seoDetail: UpdatePostSeoDetailInput
+
+  # The slug of the post creating the human readable part of its URL
+  slug: String
+  tagNames: [String!]
+  updatedAt: DateTime
+}
+
+input UpdatePostSeoDetailInput {
+  description: String
+  image: String
+  title: String
+}
+
+input UpdatePostTypeInput {
+  allowedReactions: [String!]
+  customReactions: [CustomReactionInput!]
+  description: String
+  excludedNativeShortcuts: [String!]
+  forbiddenReactions: [String!]
+  iconId: ID
+  languageTemplate: String
+  layout: String
+  name: String
+  nativeFieldsTemplates: NativeFieldsTemplatesInput
+  pluralName: String
+  postFields: CustomFieldsSchemaInput
+  primaryReactionType: ReactionType
+  recommendationsSettings: PostTypeRecommendationSettingsInput
+  selfRepliable: Boolean
+  shortContentTemplate: String
+  singleChoiceReactions: [String!]
+  slate: SlateUpdatesInput
+  titleTemplate: String
+  validReplyTypesIds: [String!]
+}
+
+input UpdatePrivateMessagingSettingsInput {
+  membersCanTurnOffPrivateMessaging: Boolean
+  membersCanUsePrivateMessaging: Boolean
+  privateMessagingEnabled: Boolean
+}
+
+# Input type for updating a publisher settings
+input UpdatePublisherInput {
+  # By enabling this, all implicit subscriptions will receive notifications from this publisher. If members subscribe/unsubscribe explicitly, they will receive/silent notifications regardless of this setting.
+  notifyImplicitSubscriptions: Boolean!
+}
+
+input UpdateSpaceInput {
+  address: SpaceAddressInput
+  bannerId: String
+  collectionId: ID
+  createdAt: DateTime
+  customSeoDetail: CustomSeoDetailInput
+  description: String
+  externalId: String
+  externalUrl: String
+  hidden: Boolean
+  imageId: String
+  inviteOnly: Boolean
+  layout: String
+  name: String
+  nonAdminsCanInvite: Boolean
+  private: Boolean
+  seoDetail: UpdateSpaceSeoDetailInput
+  slate: SlateUpdatesInput
+  slug: String
+  type: SpaceType
+  updatedAt: DateTime
+  whoCanPost: [ID!]
+  whoCanReact: [ID!]
+  whoCanReply: [ID!]
+  withRoles: Boolean
+}
+
+input UpdateSpaceMemberRoleInput {
+  roleId: String!
+}
+
+input UpdateSpacePostTypeInput {
+  postTypeId: ID!
+  whoCanPost: [ID!]
+  whoCanReact: [ID!]
+  whoCanReply: [ID!]
+}
+
+input UpdateSpaceSeoDetailInput {
+  description: String
+  imageId: String
+  title: String
+}
+
+input UpdateSubscriberInput {
+  # If enabled, the subscriber will receive email notifications.
+  emailSubscriptionEnabled: Boolean
+
+  # For each FCM devices token, the subscriber will receive push notifications.
+  fcmDeviceTokens: [String!]
+
+  # If enabled, the subscriber will receive emails if they are mentioned in a post or reply.
+  mentionEmailEnabled: Boolean
+
+  # If enabled, the subscriber will receive notifications if they are mentioned in a post or reply.
+  mentionSubscriptionEnabled: Boolean
+
+  # If enabled, the subscriber will receive emails if they receive a message.
+  messageEmailEnabled: Boolean
+
+  # If enabled, the subscriber will receive emails if someone reacts to their post or reply.
+  reactionEmailEnabled: Boolean
+
+  # If enabled, the subscriber will receive notifications if someone reacts to their post or reply.
+  reactionSubscriptionEnabled: Boolean
+}
+
+input UpdateTagInput {
+  description: String
+  slug: String
+  title: String
+}
+
+input UpdateTemplateInput {
+  about: String
+  appIds: [String!]
+  authorName: String
+  authorUrl: String
+  bannerId: String
+  categories: [String!]
+  comingSoon: Boolean
+  description: String
+  entityProperties: String
+  faviconId: String
+  hubContentId: String
+  imageId: String
+  name: String
+  previewHtml: String
+  privacyPolicyUrl: String
+  requiredPlan: PlanName
+  slate: SlateUpdatesInput
+  slug: String
+  termsOfServiceUrl: String
+}
+
+input UpdateTheme {
+  name: String!
+  status: ThemeStatus!
+  tokens: UpdateThemeTokens!
+}
+
+input UpdateThemeColor {
+  key: String!
+  weights: [UpdateThemeToken!]!
+}
+
+input UpdateThemeColorToken {
+  key: String!
+  value: String!
+}
+
+input UpdateThemeColorTokens {
+  dark: [UpdateThemeColorToken!]
+  light: [UpdateThemeColorToken!]
+}
+
+input UpdateThemeColors {
+  dark: [UpdateThemeColor!]
+  light: [UpdateThemeColor!]
+}
+
+input UpdateThemeToken {
+  key: String!
+  value: String!
+}
+
+input UpdateThemeTokens {
+  breakpoints: [UpdateThemeToken!]
+  colors: [UpdateThemeToken!]
+  fontSizes: [UpdateThemeToken!]
+  fontWeights: [UpdateThemeToken!]
+  opacity: [UpdateThemeToken!]
+  shadows: [UpdateThemeToken!]
+  sizes: [UpdateThemeToken!]
+  textStyles: [UpdateThemeToken!]
+  zIndices: [UpdateThemeToken!]
+}
+
+input UpdateThemes {
+  active: UpdateTheme!
+  drafts: [UpdateTheme!]!
+  published: [UpdateTheme!]!
+}
+
+input UpdateTopNavigation {
+  alignment: TopNavigationAlignment!
+  enabled: Boolean!
+  items: [UpdateNavigationItem!]!
+}
+
+# The `Upload` scalar type represents a file upload.
+scalar Upload
+
+type UploadedMigrations {
+  migrationId: String!
+  results: [MigrationFileResult!]!
+}
+
+input UpsertExtraPropertyInput {
+  entityId: String
+  entityType: ExtraPropertyEntityType!
+  key: String!
+  value: String!
+}
+
+input UpsertPageCustomResponse {
+  body: String
+  headers: [PageCustomResponseHeaderInput!]
+  httpCode: Int!
+}
+
+input UpsertTheme {
+  active: Boolean
+  colorTokens: UpdateThemeColorTokens
+  colors: UpdateThemeColors
+  id: String!
+  name: String
+  typography: [UpdateThemeToken!]
+}
+
+type UsernameAvailability {
+  available: Boolean!
+}
+
+type ValuePermissions {
+  isAuthorized: IsAuthorized!
+  value: String!
+}
+
+input ValuesCountInput {
+  gt: Float
+  gte: Float
+  lt: Float
+  lte: Float
+}
+
+type Vat {
+  text: String!
+  vatId: String!
+  vatType: VatType!
+}
+
+input VatInput {
+  vatId: String!
+  vatType: VatType!
+}
+
+enum VatType {
+  ae_trn
+  au_abn
+  au_arn
+  br_cnpj
+  br_cpf
+  ca_bn
+  ca_gst_hst
+  ca_pst_bc
+  ca_pst_mb
+  ca_pst_sk
+  ca_qst
+  ch_vat
+  cl_tin
+  es_cif
+  eu_vat
+  gb_vat
+  hk_br
+  id_npwp
+  il_vat
+  in_gst
+  jp_cn
+  jp_rn
+  kr_brn
+  li_uid
+  mx_rfc
+  my_frp
+  my_itn
+  my_sst
+  no_vat
+  nz_gst
+  ru_inn
+  ru_kpp
+  sa_vat
+  sg_gst
+  sg_uen
+  th_vat
+  tw_vat
+  us_ein
+  za_vat
+}
+
+type VatTypeInfo {
+  key: VatType!
+  placeholder: String!
+  text: String!
+  value: VatType!
+}
+
+input VerifyMemberInput {
+  memberId: String!
+  verificationCode: String
+}
+
+input subscriptionInput {
+  id: String!
+}

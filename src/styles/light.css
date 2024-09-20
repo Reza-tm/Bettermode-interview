@@ -1,0 +1,20 @@
+.light {
+    --bm-color-background: #eff2fa;
+    --bm-color-background-backdrop: #00000080;
+    --bm-color-background-hovered: #fafbff;
+    --bm-color-background-pressed: #deeaff;
+    --bm-color-content: #181c35;
+    --bm-color-content-on-background: #181c35;
+    --bm-color-content-on-background-pressed: #006ed4;
+    --bm-color-content-subdued: #32416e;
+    --bm-color-link: #0094e3;
+    --bm-color-link-hovered: #1d4aef;
+    --bm-color-topbar: #FFFFFF;
+    --bm-color-surface: #FFFFFF;
+    --bm-color-surface-neutral: #e6eeff;
+    --bm-color-action-neutral: #FFFFFF;
+    --bm-color-action-neutral-pressed: #eff2fa;
+    --bm-color-action-neutral-hovered: #f4f7ff;
+    --bm-color-line: #c3cadb;
+    --bm-color-focused: #0069f5;
+}

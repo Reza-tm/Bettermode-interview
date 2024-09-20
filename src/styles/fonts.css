@@ -1,0 +1,13 @@
+:root {
+    --bm-font-size-h-xs: 22px;
+    --bm-font-size-h-lg: 32px;
+    --bm-font-size-h-2xl: 40px;
+}
+
+@media screen and (max-width: 640px) {
+    :root{
+    --bm-font-size-h-xs: 18px;
+    --bm-font-size-h-lg: 24px;
+    --bm-font-size-h-2xl: 32px;
+    }
+}

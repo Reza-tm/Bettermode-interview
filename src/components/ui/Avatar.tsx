@@ -1,22 +1,37 @@
-import { ImgHTMLAttributes, useState } from "react";
+import { ImgHTMLAttributes } from "react";
 import { cn } from "@/utils";
+import { User as DefaultUserIcon } from "@icons";
 
 type Props = {
-  src: string;
+  src?: string;
 } & ImgHTMLAttributes<HTMLImageElement>;
 
 export const Avatar = (props: Props) => {
   const { src, alt, className, ...attrs } = props;
-  const [isLoaded, setIsLoaded] = useState(false);
 
   return (
-    <div className={"h-10 w-10 overflow-hidden rounded-full"}>
-      <img
-        className={cn("aspect-square h-full w-full", className)}
-        src={src}
-        alt={alt}
-        {...attrs}
-      />
+    <div
+      className={cn(
+        "grid h-10 w-10 place-content-center overflow-hidden rounded-full border-line",
+        !src && "border",
+        className,
+      )}
+    >
+      {src ? (
+        <img
+          className={"aspect-square h-full w-full"}
+          src={src}
+          alt={alt}
+          {...attrs}
+        />
+      ) : (
+        <div>
+          <DefaultUserIcon
+            data-testid={"default-user-icon"}
+            className={"fill-content-on-background"}
+          />
+        </div>
+      )}
     </div>
   );
 };

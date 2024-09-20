@@ -1,50 +1,59 @@
-# React + TypeScript + Vite
-
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
-
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+## 🚨Better documentation are available on Storybook 🚨
+```bash
+pnpm install && pnpm storybook 
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+# Getting started
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+## Welcome to Better tech (Better mode but for tech community :D)
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
+## Implemented Features
+- SSR
+- Auth
+- Tests
+- Responsiveness
+- Stories
+- Dark mode
+- Documentation
+
+
+## Installation
+
+To get started, simply run the following command
+```bash
+pnpm install
+```
+
+## Configuration
+To config application properly you should add an ENV file like .env.example which includes :
+
+- **VITE_BASE_URL** : api base URL (in our case graphql endpoint url)
+- **VITE_APP_URL** : URL of your app (or community). e.g: https://basic-uw7jm17j.bettermode.io
+
+Then, run the following command to generate a global, type-safe GraphQL interface using gql.tada:
+```bash
+pnpm pnpm run graphql-schema
+```
+
+## Test
+We use **Vitest** for testing, as it handles ESM better than Jest, which has known issues with ESM support.
+While overall test coverage is below 70% due to time constraints, critical parts of the application are covered. These include:
+- **UI components**
+- **Utils**
+- **Crucial Features** Important parts of the app like **reactions** have tests to ensure the app remains stable.
+  For running test just run following command
+```bash
+pnpm test
+```
+
+## Build
+
+To build the application only run following commands:
+```bash
+pnpm build
+```
+
+And for start built version run :
+```bash
+pnpm preview
 ```

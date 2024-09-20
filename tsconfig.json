@@ -1,7 +1,42 @@
 {
-  "files": [],
-  "references": [
-    { "path": "./tsconfig.app.json" },
-    { "path": "./tsconfig.node.json" }
-  ]
+  "compilerOptions": {
+    "target": "ES2020",
+    "useDefineForClassFields": true,
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "skipLibCheck": true,
+    "allowSyntheticDefaultImports": true,
+    "types": ["@testing-library/jest-dom"],
+
+    /* Bundler mode */
+    "moduleResolution": "Bundler",
+    "allowImportingTsExtensions": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "react-jsx",
+
+    /* Linting */
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+
+    "paths": {
+      "@/*": ["./src/*"],
+      "@ui": ["./src/components/ui"],
+      "@icons": ["./src/assets/icons"],
+      "@constants": ["./src/constants/*"],
+      "@hooks": ["./src/hooks/*"]
+    }
+  },
+  "plugins": [
+    {
+      "name": "gql.tada/ts-plugin",
+      "schema": "./schema.graphql",
+      "tadaOutputLocation": "./src/graphql-env.d.ts"
+    }
+  ],
+  "include": ["src", "./setup-tests.ts" ,],
+  "references": [{ "path": "./tsconfig.node.json" }],
 }

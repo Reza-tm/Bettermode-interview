@@ -7,6 +7,7 @@ export const Terminal = (props: IconProps) => {
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 24 24"
       fill="currentColor"
+      {...props}
       className={cn("size-6", props.className)}
     >
       <path

@@ -1,3 +1,19 @@
+@import "./styles/fonts.css";
+@import "./styles/dark.css";
+@import "./styles/light.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+body {
+    font-size: var(--bm-font-size-md);
+    word-break: break-word;
+    font-kerning:normal;
+    background-color: var(--bm-color-background);
+    line-height: var(--bm-font-line-height-md);
+}
+
+body * {
+    transition: 200ms background-color;
+}
