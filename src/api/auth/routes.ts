@@ -1,8 +1,8 @@
 import cookie from "cookie";
 import { add } from "date-fns";
 import { Request, Response, Router } from "express";
-import { createSSRApolloClient } from "@/graphql/graphql.server.ts";
-import { NETWORK_LOGIN } from "@/graphql/member/mutations.ts";
+import { createSSRApolloClient } from "@/graphql/graphql.server";
+import { NETWORK_LOGIN } from "@/graphql/member/mutations";
 
 export const authRouter = Router();
 

@@ -4,6 +4,7 @@ import { DetailedPostCard } from "@/components/posts/DetailedPostCard";
 import { useNavigate, useParams } from "react-router-dom";
 import { DetailedPostCardSkeleton } from "@/components/posts/DetailedPostCardSkeleton";
 import { SimpleError } from "@/components/shared/SimpleError";
+import { PostPageHeader } from "@/components/posts/PostPageHeader";
 
 type Params = {
   postSlug: string;
@@ -28,9 +29,17 @@ export const PostPage = () => {
   if (error) return <SimpleError error={error} />;
 
   return (
-    <div className={"pb-5"}>
+    <div className={"flex flex-col gap-4 pb-5"}>
+      {data && (
+        <>
+          <PostPageHeader
+            spaceName={data.post.space?.name || ""}
+            spaceUrl={data.post.space?.relativeUrl || "/"}
+          />
+          <DetailedPostCard {...data.post} />
+        </>
+      )}
       {!data && <DetailedPostCardSkeleton />}
-      {data && <DetailedPostCard {...data.post} />}
     </div>
   );
 };

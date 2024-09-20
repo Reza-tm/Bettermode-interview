@@ -1,4 +1,4 @@
-import fs from "node:fs/promises";
+import * as fs from "node:fs/promises";
 import { isProduction } from "./server.constant";
 
 /**

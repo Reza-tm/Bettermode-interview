@@ -12,3 +12,4 @@ export * from "./sun";
 export * from "./terminal";
 export * from "./user";
 export * from "./close";
+export * from "./arrow-left";
