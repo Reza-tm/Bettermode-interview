@@ -5,15 +5,15 @@ pnpm install && pnpm storybook
 
 # Getting started
 
-## Welcome to Better tech (Better mode but for tech community :D)
+## Welcome to Better tech (Better mode but in tech community :D)
 
 ## Implemented Features
+- Dark mode
+- Responsiveness
 - SSR
 - Auth
 - Tests
-- Responsiveness
 - Stories
-- Dark mode
 - Documentation
 
 
@@ -24,8 +24,16 @@ To get started, simply run the following command
 pnpm install
 ```
 
+## Development
+
+To run application in dev mode:
+```bash
+pnpm dev
+```
+
+
 ## Configuration
-To config application properly you should add an ENV file like .env.example which includes :
+To config application you can use .env file :
 
 - **VITE_BASE_URL** : api base URL (in our case graphql endpoint url)
 - **VITE_APP_URL** : URL of your app (or community). e.g: https://basic-uw7jm17j.bettermode.io
@@ -37,10 +45,10 @@ pnpm pnpm run graphql-schema
 
 ## Test
 We use **Vitest** for testing, as it handles ESM better than Jest, which has known issues with ESM support.
-While overall test coverage is below 70% due to time constraints, critical parts of the application are covered. These include:
+While overall test coverage is below 60% due to time constraints, critical parts of the application are covered. These include:
 - **UI components**
 - **Utils**
-- **Crucial Features** Important parts of the app like **reactions** have tests to ensure the app remains stable.
+- **Crucial Features** : Important parts of the app like **reactions** have tests to ensure the app remains stable.
   For running test just run following command
 ```bash
 pnpm test
